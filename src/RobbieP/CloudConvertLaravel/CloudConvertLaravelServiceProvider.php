@@ -35,16 +35,7 @@ class CloudConvertLaravelServiceProvider extends ServiceProvider {
 
 		$this->app['cloudconvert'] = $this->app->share(function($app)
 		{
-//			$app_id = Config::get('cloudconvert::api_key');
-//			dd($app_id);
-			//$api_key = $this->getConfig('api_key');
-
-
-
-
-
-
-			return new CloudConvert();
+			return new CloudConvert($app['config']->get('cloudconvert-laravel::config'));
 		});
 
 		$this->app->booting(function()

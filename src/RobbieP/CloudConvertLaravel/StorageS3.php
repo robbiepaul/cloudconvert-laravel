@@ -16,11 +16,15 @@ class StorageS3 extends Storage implements StorageInterface {
 	public $acl;
 	public $region;
 
-	function __construct() {
-		$this->accesskeyid = Config::get('cloudconvert-laravel::s3.accesskeyid');
-		$this->secretaccesskey = Config::get('cloudconvert-laravel::s3.secretaccesskey');
-		$this->bucket =  Config::get('cloudconvert-laravel::s3.bucket');
+	function __construct(Config $config) {
+		$this->config = $config;
+		$this->accesskeyid = $this->config->get('s3.accesskeyid');
+		$this->secretaccesskey = $this->config->get('s3.secretaccesskey');
+		$this->bucket = $this->config->get('s3.bucket');
+		$this->acl = $this->config->get('s3.acl');
+		$this->region = $this->config->get('s3.region');
 	}
+
 	public function validateCredentials()
 	{
 		if(empty($this->accesskeyid)) {

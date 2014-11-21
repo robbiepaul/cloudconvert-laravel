@@ -15,11 +15,13 @@ class StorageFTP extends Storage implements  StorageInterface {
 	public $user;
 	public $password;
 	public $path;
+	private $config;
 
-	function __construct() {
-		$this->host = Config::get('cloudconvert-laravel::ftp.host');
-		$this->user =  Config::get('cloudconvert-laravel::ftp.user');;
-		$this->password =  Config::get('cloudconvert-laravel::ftp.password');
+	function __construct(Config $config) {
+		$this->config = $config;
+		$this->host = $this->config->get('ftp.host');
+		$this->user =  $this->config->get('ftp.user');
+		$this->password = $this->config->get('ftp.password');
 	}
 
 	public function validateCredentials()

@@ -13,7 +13,6 @@
 
 namespace RobbieP\CloudConvertLaravel;
 
-use Config;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Message\Response;
 use GuzzleHttp\Stream\Stream;
@@ -56,13 +55,27 @@ class CloudConvert
      */
     private $storage_options = ['s3', 'ftp'];
 
+    /**
+     * Configuration options
+     * @var Config
+     */
+    private $config;
+
 
     /**
-     * @param null $api_key
+     * @param $config
+     * @internal param null $api_key
      */
-    function __construct($api_key = null)
+    function __construct($config = null)
     {
-        $this->api_key = $api_key ?: Config::get('cloudconvert-laravel::api_key');
+
+        if(is_array($config))
+            $this->config = new Config($config);
+
+        if(is_object($config))
+            $this->config = $config;
+
+        $this->api_key = is_string($config) ? $config : (is_object($this->config) ? $this->config->get('api_key') : null  );
         $this->setClient();
         $this->setFilesystem();
     }
@@ -85,7 +98,6 @@ class CloudConvert
     public function setFilesystem($fileSystem = null)
     {
         $this->fileSystem = (!is_null($fileSystem)) ? $fileSystem : new Filesystem();
-
     }
 
     /**
@@ -199,7 +211,7 @@ class CloudConvert
     public function processes()
     {
         $this->checkAPIkey();
-        $results = $this->start("/processes?apikey={$this->api_key}");
+        $results = $this->start("/processes?apikey={$this->getApiKey()}");
         return $this->processes = new Collection($results);
     }
 
@@ -245,7 +257,7 @@ class CloudConvert
         $response = $this->start('/process', [
             'inputformat' => $this->getInputFormat(),
             'outputformat' => $this->getOutputFormat(),
-            'apikey' => $this->api_key
+            'apikey' => $this->getApiKey()
         ]);
 
         if (!empty($this->options['callback'])) {
@@ -586,7 +598,7 @@ class CloudConvert
      */
     public function S3($path, $options = [])
     {
-        $instance = new StorageS3();
+        $instance = new StorageS3($this->config);
 		return $this->returnInstanceWithOptions($path, $options, $instance);
     }
 
@@ -597,7 +609,7 @@ class CloudConvert
      */
     public function FTP($path, $options = [])
     {
-        $instance = new StorageFtp();
+        $instance = new StorageFtp($this->config);
 		return $this->returnInstanceWithOptions($path, $options, $instance);
     }
 

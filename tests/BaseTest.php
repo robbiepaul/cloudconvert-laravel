@@ -5,8 +5,7 @@ abstract class BaseTest extends PHPUnit_Framework_TestCase {
 
 	public static function bootstrapLaravel()
 	{
-		require __DIR__.'/../../../../vendor/autoload.php';
-		require __DIR__.'/../../../../bootstrap/start.php';
+
 	}
 
 	protected  $cloudConvert;
@@ -17,6 +16,7 @@ abstract class BaseTest extends PHPUnit_Framework_TestCase {
 	{
 		self::bootstrapLaravel();
 		parent::__construct();
+		$config = Mockery::mock('\RobbieP\CloudConvertLaravel\Config')->shouldReceive('get')->andReturn('VALUE');
 		$this->cloudConvert = new \RobbieP\CloudConvertLaravel\CloudConvert();
 		$client = $this->mockClient();
 		$this->cloudConvert->setClient($client);
