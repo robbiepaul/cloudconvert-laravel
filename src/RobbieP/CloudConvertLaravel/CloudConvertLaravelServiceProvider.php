@@ -3,7 +3,6 @@
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Foundation\AliasLoader;
-use \Config;
 
 class CloudConvertLaravelServiceProvider extends ServiceProvider {
 
