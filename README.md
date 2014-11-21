@@ -2,7 +2,7 @@
 
 
 # CloudConvert Laravel API
-====================
+
 
 A Laravel wrapper for the CloudConvert API. See [https://cloudconvert.org](https://cloudconvert.org) for more details.
 
@@ -12,13 +12,35 @@ A Laravel wrapper for the CloudConvert API. See [https://cloudconvert.org](https
  
 ## Installation
  
-Install this package through Composer. Add this to your composer.json file:
+Install this package through [Composer](https://getcomposer.org/). 
 
-```js
+Add this to your composer.json dependencies:
+
+```
 "require": {
    "robbiep/cloudconvert-laravel": "0.1.*@dev"
 }
 ```
+
+Run `composer install` to download the required files.
+
+Next you need to add the service provider to `config/app.php`
+
+```
+'providers' => array(
+    ...
+    'RobbieP\CloudConvertLaravel\CloudConvertLaravelServiceProvider'
+)
+```
+One more step. 
+
+You need to publish the config `php artisan config:publish robbiep/cloudconvert-laravel`
+
+Just enter your API key in `config/packages/robbiep/cloudconvert-laravel/config.php` (you can get one for free at [https://cloudconvert.org](https://cloudconvert.org))
+
+
+
+Now you can use CloudConvert in your application!
 
 ## Usage
  

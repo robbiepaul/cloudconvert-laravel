@@ -38,6 +38,7 @@ class Convert extends Command {
 	public function __construct(CloudConvert $cloudConvert)
 	{
 		$this->cloudConvert = $cloudConvert;
+		$this->cloudConvert->setConfig(\Config::get('cloudconvert-laravel::config'));
 		parent::__construct();
 	}
 
@@ -66,7 +67,7 @@ class Convert extends Command {
 			$o = $this->parseOptions($options);
 			$process->withOptions($o);
 		}
-		if(!empty($queue)) {
+		if(empty($queue)) {
 			$process->to($out);
 			$this->info('Successfully converted '.basename($inputfile).' to '.basename($outputfile));
 		} else {

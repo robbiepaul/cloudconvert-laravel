@@ -68,14 +68,7 @@ class CloudConvert
      */
     function __construct($config = null)
     {
-
-        if(is_array($config))
-            $this->config = new Config($config);
-
-        if(is_object($config))
-            $this->config = $config;
-
-        $this->api_key = is_string($config) ? $config : (is_object($this->config) ? $this->config->get('api_key') : null  );
+        $this->setConfig($config);
         $this->setClient();
         $this->setFilesystem();
     }
@@ -444,6 +437,20 @@ class CloudConvert
     {
         if (isset($this->process->output->url)) return $this->process->output->url;
         throw new \Exception('Download URL not ready yet.');
+    }
+
+    /**
+     * @param Config $config
+     */
+    public function setConfig($config = null)
+    {
+        if(is_array($config))
+            $this->config = new Config($config);
+
+        if(is_object($config))
+            $this->config = $config;
+
+        $this->api_key = is_string($config) ? $config : (is_object($this->config) ? $this->config->get('api_key') : null  );
     }
 
     /**
