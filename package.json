@@ -1,0 +1,12 @@
+{
+  "devDependencies": {
+    "gulp": "^3.6.2",
+    "gulp-phpunit": "^0.5.3",
+    "gulp-notify": "~2.0.1",
+    "lodash": "latest",
+    "notify-send": "~0.1.2"
+  },
+  "dependencies": {
+    "lodash": "~2.4.1"
+  }
+}

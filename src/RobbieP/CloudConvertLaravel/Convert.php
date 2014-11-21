@@ -1,0 +1,251 @@
+<?php
+namespace RobbieP\CloudConvertLaravel;
+
+
+abstract class Convert {
+
+	protected $path;
+	protected $file;
+	protected $filename;
+	protected $properties;
+	protected $format;
+	protected $method;
+	protected $type;
+	protected $fileSystem;
+	protected $data;
+	protected $converteroptions;
+	protected $preset;
+	protected $seperator;
+
+	/**
+	 * @param $file
+	 * @param null $converteroptions
+	 * @internal param $properties
+	 */
+	function __construct($file, $converteroptions = null)
+	{
+		if( ! is_null($file) ) $this->setFile($file);
+		if( ! is_null($converteroptions) ) $this->setConverterOptions($converteroptions);
+		$this->seperator = '/'; //DIRECTORY_SEPARATOR
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getFile()
+	{
+		return $this->file;
+	}
+
+	/**
+	 * @return string
+     */
+	public function getFilepath()
+	{
+		return (isset($this->path) && !empty($this->path)) ? $this->path . $this->seperator . $this->filename : $this->getFilename();
+	}
+
+	/**
+	 * @param mixed $file
+	 * @return $this
+	 */
+	public function setFile($file)
+	{
+		if($this->isPath($file)) {
+			$this->setPath($file);
+			return $this;
+		}
+		if($this->isFormat($file)) {
+			$this->setFormat($file);
+			return $this;
+		}
+		$this->file = $file;
+		$this->setPath(dirname($file));
+		$this->setFilename(basename($file));
+
+		return $this;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getConverterOptions()
+	{
+		return !empty( $this->converteroptions ) ? $this->converteroptions : null;
+	}
+
+	/**
+	 * @return null
+     */
+	public function getPreset()
+	{
+		return !empty( $this->preset ) ? $this->preset : null;
+	}
+
+	/**
+	 * @param mixed $properties
+	 */
+	public function setConverterOptions($properties = [])
+	{
+		if(!empty($properties))
+		{
+			foreach ($properties as $key => $name)
+			{
+				$this->addConverterOptions($key, $name);
+			}
+		}
+	}
+
+	/**
+	 * @param $key
+	 * @param $name
+     */
+	public function addConverterOptions($key, $name)
+	{
+		$this->converteroptions[$key] = $name;
+	}
+
+	/**
+	 * @return string
+	 * @throws \Exception
+     */
+	public function getExtension()
+	{
+		if( $filepath = $this->getFilepath() ) {
+			return $this->parseExtension($filepath);
+		}
+		throw new \Exception( 'Unknown file path' );
+	}
+
+	/**
+	 * @return string
+	 * @throws \Exception
+     */
+	public function getFormat()
+	{
+		if( is_null($this->format) ) {
+			$this->format = $this->getExtension();
+		}
+		$this->validateFormat($this->format);
+		return $this->format;
+	}
+
+	/**
+	 * @param mixed $format
+	 */
+	public function setFormat($format)
+	{
+		$this->validateFormat($format);
+		$this->format = $format;
+	}
+
+	/**
+	 * @param mixed $path
+	 */
+	public function setPath($path)
+	{
+		$this->path = str_replace('http:', '', rtrim($path, '/'));
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPath()
+	{
+		return empty($this->path) ? '.' : $this->path;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getFilename()
+	{
+		return $this->filename;
+	}
+
+	/**
+	 * @param mixed $filename
+	 * @param null $ext
+	 */
+	public function setFilename($filename, $ext = null)
+	{
+		$this->filename = (is_null($ext)) ? $filename : preg_replace("/{$this->parseExtension($filename)}$/", $ext, $filename);
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getMethod()
+	{
+		return $this->method;
+	}
+
+	/**
+	 * @param mixed $method
+	 */
+	public function setMethod($method)
+	{
+		$this->method = $method;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getData()
+	{
+		return $this->data;
+	}
+
+	public function getStorage()
+	{
+		return null;
+	}
+
+	/**
+	 * @param mixed $data
+	 */
+	public function setData($data)
+	{
+		$this->data = $data;
+	}
+
+	/**
+	 * @param mixed $preset
+	 */
+	public function setPreset($preset)
+	{
+		$this->preset = $preset;
+	}
+
+	public function filenameCheck(Convert $input)
+	{
+		if (empty($this->filename) && empty($this->path)) {
+			$this->setPath($input->getPath());
+			$this->setFilename($input->getFilename(), $this->getFormat());
+		}
+	}
+
+	protected function isPath($file)
+	{
+		return $this->parseExtension($file) === '' && strstr($file, '/');
+	}
+
+	protected function parseExtension($filepath)
+	{
+		return strtolower(pathinfo($filepath, PATHINFO_EXTENSION));
+	}
+
+	protected function validateFormat($format)
+	{
+		if( empty($format) || ! $this->isFormat($format) ) {
+			throw new \Exception('Invalid format');
+		}
+	}
+
+	protected  function isFormat($format)
+	{
+		return ctype_alnum($format);
+	}
+
+
+}

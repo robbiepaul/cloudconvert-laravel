@@ -1,0 +1,29 @@
+{
+    "name": "robbiep/cloudconvert-laravel",
+    "description": "A Laravel wrapper for the CloudConvert API",
+    "authors": [
+        {
+            "name": "Robbie Paul",
+            "email": "robbiepaul@me.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "illuminate/support": "4.2.*",
+        "guzzlehttp/guzzle": "~5.0",
+        "symfony/http-foundation": "3.0.*@dev",
+        "phpunit/phpunit": "4.3.5"
+    },
+    "require-dev": {
+        "mockery/mockery": "0.9.*@dev"
+    },
+    "autoload": {
+        "classmap": [
+            "src/migrations"
+        ],
+        "psr-0": {
+            "RobbieP\\CloudConvertLaravel\\": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
