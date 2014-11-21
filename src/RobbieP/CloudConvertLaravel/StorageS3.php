@@ -39,7 +39,7 @@ class StorageS3 extends Storage implements StorageInterface {
 			throw new \Exception('Must provide the bucket for your S3 account');
 		}
 	}
-	
+
 
 	/**
 	 * @return mixed
