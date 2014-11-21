@@ -16,13 +16,15 @@ class StorageS3 extends Storage implements StorageInterface {
 	public $acl;
 	public $region;
 
-	function __construct(Config $config) {
+	function __construct($config) {
 		$this->config = $config;
-		$this->accesskeyid = $this->config->get('s3.accesskeyid');
-		$this->secretaccesskey = $this->config->get('s3.secretaccesskey');
-		$this->bucket = $this->config->get('s3.bucket');
-		$this->acl = $this->config->get('s3.acl');
-		$this->region = $this->config->get('s3.region');
+		if(is_object($config)) {
+			$this->accesskeyid = $this->config->get('s3.accesskeyid');
+			$this->secretaccesskey = $this->config->get('s3.secretaccesskey');
+			$this->bucket = $this->config->get('s3.bucket');
+			$this->acl = $this->config->get('s3.acl');
+			$this->region = $this->config->get('s3.region');
+		}
 	}
 
 	public function validateCredentials()
@@ -37,8 +39,7 @@ class StorageS3 extends Storage implements StorageInterface {
 			throw new \Exception('Must provide the bucket for your S3 account');
 		}
 	}
-
-
+	
 
 	/**
 	 * @return mixed

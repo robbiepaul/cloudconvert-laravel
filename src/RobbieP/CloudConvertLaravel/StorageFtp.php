@@ -17,11 +17,13 @@ class StorageFTP extends Storage implements  StorageInterface {
 	public $path;
 	private $config;
 
-	function __construct(Config $config) {
+	function __construct($config) {
 		$this->config = $config;
-		$this->host = $this->config->get('ftp.host');
-		$this->user =  $this->config->get('ftp.user');
-		$this->password = $this->config->get('ftp.password');
+		if(is_object($config)) {
+			$this->host = $this->config->get('ftp.host');
+			$this->user = $this->config->get('ftp.user');
+			$this->password = $this->config->get('ftp.password');
+		}
 	}
 
 	public function validateCredentials()
