@@ -448,21 +448,33 @@ class CloudConvert
     }
 
 
-    private function checkAPIkey()
+	/**
+	 *
+     */
+	private function checkAPIkey()
     {
         if (!$this->hasApiKey()) {
             throw new \InvalidArgumentException('No API key provided.');
         }
     }
 
-    private function filterTypesByGroup($types, $group)
+	/**
+	 * @param $types
+	 * @param $group
+	 * @return mixed
+     */
+	private function filterTypesByGroup($types, $group)
     {
         return $types->filter(function ($type) use ($group) {
             return $type->group === $group;
         });
     }
 
-    private function filterType($type)
+	/**
+	 * @param $type
+	 * @return mixed
+     */
+	private function filterType($type)
     {
 		$a = explode('.', $type);
         return end($a);
@@ -740,7 +752,11 @@ class CloudConvert
         $this->converteroptions[$name] = $value;
     }
 
-    public function withPreset($preset)
+	/**
+	 * @param $preset
+	 * @return $this
+     */
+	public function withPreset($preset)
     {
         $this->preset = $preset;
         return $this;
