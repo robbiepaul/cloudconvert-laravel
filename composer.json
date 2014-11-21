@@ -3,7 +3,6 @@
     "description": "A Laravel wrapper for the CloudConvert API",
     "keywords": ["cloudconvert", "laravel", "laravel4", "screenshot", "conversion", "office", "documents"],
     "license": "MIT",
-    "version": "0.1.1",
     "authors": [
         {
             "name": "Robbie Paul",
