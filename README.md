@@ -14,11 +14,11 @@ A Laravel wrapper for the CloudConvert API. See [https://cloudconvert.org](https
  
 Install this package through [Composer](https://getcomposer.org/). 
 
-Add this to your composer.json dependencies:
+Add this to your `composer.json` dependencies:
 
 ```
 "require": {
-   "robbiep/cloudconvert-laravel": "0.1.*@dev"
+   "robbiep/cloudconvert-laravel": "0.1.1.*@dev"
 }
 ```
 

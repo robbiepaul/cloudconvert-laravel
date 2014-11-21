@@ -35,6 +35,7 @@ class Processes extends Command {
 	public function __construct(CloudConvert $cloudConvert)
 	{
 		$this->cloudConvert = $cloudConvert;
+		$this->cloudConvert->setConfig(\Config::get('cloudconvert-laravel::config'));
 		parent::__construct();
 	}
 
