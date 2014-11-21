@@ -18,9 +18,6 @@
         "mockery/mockery": "0.9.*@dev"
     },
     "autoload": {
-        "classmap": [
-            "src/migrations"
-        ],
         "psr-0": {
             "RobbieP\\CloudConvertLaravel\\": "src/"
         }
