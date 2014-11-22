@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>CloudConvert Laravel by robbiepaul</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>CloudConvert Laravel</h1>
+        <h2>A Laravel wrapper for the CloudConvert API</h2>
+        <a href="https://github.com/robbiepaul/cloudconvert-laravel" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a id="cloudconvert-laravel-api" class="anchor" href="#cloudconvert-laravel-api" aria-hidden="true"><span class="octicon octicon-link"></span></a>CloudConvert Laravel API</h1>
+
+<p>A Laravel wrapper for the CloudConvert API. See <a href="https://cloudconvert.org">https://cloudconvert.org</a> for more details.</p>
+
+<p><a href="https://travis-ci.org/robbiepaul/cloudconvert-laravel"><img src="https://travis-ci.org/robbiepaul/cloudconvert-laravel.svg?branch=v0.1" alt="Build Status"></a></p>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>Install this package through <a href="https://getcomposer.org/">Composer</a>. </p>
+
+<p>Add this to your <code>composer.json</code> dependencies:</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-s1"><span class="pl-pds">"</span>require<span class="pl-pds">"</span></span><span class="pl-k">:</span> {
+   <span class="pl-s1"><span class="pl-pds">"</span>robbiep/cloudconvert-laravel<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">"</span>1.*@dev<span class="pl-pds">"</span></span>
+}</pre></div>
+
+<p>Run <code>composer install</code> to download the required files.</p>
+
+<p>Next you need to add the service provider to <code>config/app.php</code></p>
+
+<div class="highlight highlight-php"><pre><span class="pl-s2"><span class="pl-s1"><span class="pl-pds">'</span>providers<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s3">array</span>(</span>
+<span class="pl-s2">    <span class="pl-k">...</span></span>
+<span class="pl-s2">    <span class="pl-s1"><span class="pl-pds">'</span>RobbieP\CloudConvertLaravel\CloudConvertLaravelServiceProvider<span class="pl-pds">'</span></span></span>
+<span class="pl-s2">)</span></pre></div>
+
+<p>One more step. </p>
+
+<p>You need to publish the config <code>php artisan config:publish robbiep/cloudconvert-laravel</code></p>
+
+<p>Just enter your API key in <code>config/packages/robbiep/cloudconvert-laravel/config.php</code> </p>
+
+<blockquote>
+<p>You can get your free API key by just registering at <a href="https://cloudconvert.org">https://cloudconvert.org</a></p>
+</blockquote>
+
+<p>Now you can use CloudConvert in your application!</p>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>There's many ways to use CloudConvert. I'll cover a few of them here, for all the converter options I suggest checking out the API docs.</p>
+
+<h3>
+<a id="file-conversion" class="anchor" href="#file-conversion" aria-hidden="true"><span class="octicon octicon-link"></span></a>File conversion</h3>
+
+<div class="highlight highlight-php"><pre><span class="pl-s2"><span class="pl-c"># Convert the file to /a/path/to/file.mp4</span></span>
+<span class="pl-s2"><span class="pl-s3">CloudConvert</span><span class="pl-k">::</span>file(<span class="pl-s1"><span class="pl-pds">'</span>/a/path/to/file.mov<span class="pl-pds">'</span></span>)<span class="pl-k">-&gt;</span>to(<span class="pl-s1"><span class="pl-pds">'</span>mp4<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s2"></span>
+<span class="pl-s2"></span>
+<span class="pl-s2"><span class="pl-c"># Convert the file and save it in a different location /a/new/path/to/new.mp4</span></span>
+<span class="pl-s2"><span class="pl-s3">CloudConvert</span><span class="pl-k">::</span>file(<span class="pl-s1"><span class="pl-pds">'</span>/a/path/to/biggles.webm<span class="pl-pds">'</span></span>)<span class="pl-k">-&gt;</span>to(<span class="pl-s1"><span class="pl-pds">'</span>/a/new/path/to/new.mp4<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s2"></span>
+<span class="pl-s2"></span>
+<span class="pl-s2"><span class="pl-c"># It also works with Laravel's file upload</span></span>
+<span class="pl-s2"><span class="pl-k">if</span> (<span class="pl-s3">Input</span><span class="pl-k">::</span>hasFile(<span class="pl-s1"><span class="pl-pds">'</span>photo<span class="pl-pds">'</span></span>))</span>
+<span class="pl-s2">{</span>
+<span class="pl-s2">    <span class="pl-s3">CloudConvert</span><span class="pl-k">::</span>file( <span class="pl-s3">Input</span><span class="pl-k">::</span>file(<span class="pl-s1"><span class="pl-pds">'</span>photo<span class="pl-pds">'</span></span>) )<span class="pl-k">-&gt;</span>to(<span class="pl-s1"><span class="pl-pds">'</span>/a/local/path/profile_image.jpg<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s2">}</span>
+<span class="pl-s2"></span>
+<span class="pl-s2"></span>
+<span class="pl-s2"><span class="pl-c"># Convert the image to kitty.jpg with quality of 70%</span></span>
+<span class="pl-s2"><span class="pl-s3">CloudConvert</span><span class="pl-k">::</span>file(<span class="pl-s1"><span class="pl-pds">'</span>kitty.png<span class="pl-pds">'</span></span>)<span class="pl-k">-&gt;</span>quality(<span class="pl-c1">70</span>)<span class="pl-k">-&gt;</span>to(<span class="pl-s1"><span class="pl-pds">'</span>jpg<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s2"></span>
+<span class="pl-s2"></span>
+<span class="pl-s2"><span class="pl-c"># Convert a PowerPoint presentation to a set of images, let's say you only want slides 2 to 4</span></span>
+<span class="pl-s2"><span class="pl-c"># This will save presentation-2.jpg, presentation-3.jpg and presentation-4.jpg</span></span>
+<span class="pl-s2"><span class="pl-s3">CloudConvert</span><span class="pl-k">::</span>file(<span class="pl-s1"><span class="pl-pds">'</span>presentation.ppt<span class="pl-pds">'</span></span>)<span class="pl-k">-&gt;</span>pageRange(<span class="pl-c1">2</span>, <span class="pl-c1">4</span>)<span class="pl-k">-&gt;</span>to(<span class="pl-s1"><span class="pl-pds">'</span>jpg<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s2"></span></pre></div>
+
+<h4>
+<a id="converter-options" class="anchor" href="#converter-options" aria-hidden="true"><span class="octicon octicon-link"></span></a>Converter options</h4>
+
+<p>There are many more conversion options. I've put shortcuts like the ones above for the most common. However you can pass through any options you like using the <code>withOptions</code> method, such as:</p>
+
+<div class="highlight highlight-php"><pre><span class="pl-s2"><span class="pl-c"># Convert the meow.wav to meow.mp3 with a frequecy of 44100 Hz and normalize the audio to +20dB</span></span>
+<span class="pl-s2"><span class="pl-s3">CloudConvert</span><span class="pl-k">::</span>file(<span class="pl-s1"><span class="pl-pds">'</span>meow.wav<span class="pl-pds">'</span></span>)<span class="pl-k">-&gt;</span>withOptions([</span>
+<span class="pl-s2">    <span class="pl-s1"><span class="pl-pds">'</span>audio_frequency<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s1"><span class="pl-pds">'</span>44100<span class="pl-pds">'</span></span>, </span>
+<span class="pl-s2">    <span class="pl-s1"><span class="pl-pds">'</span>audio_normalize<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s1"><span class="pl-pds">'</span>+20dB<span class="pl-pds">'</span></span></span>
+<span class="pl-s2">])<span class="pl-k">-&gt;</span>to(<span class="pl-s1"><span class="pl-pds">'</span>mp3<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s2"></span>
+<span class="pl-s2"></span>
+<span class="pl-s2"><span class="pl-c"># Convert the fido_falls_over.mp4 to fido.gif but you only want 10 seconds of it, starting at 1:02</span></span>
+<span class="pl-s2"><span class="pl-s3">CloudConvert</span><span class="pl-k">::</span>file(<span class="pl-s1"><span class="pl-pds">'</span>fido_falls_over.mp4<span class="pl-pds">'</span></span>)<span class="pl-k">-&gt;</span>withOptions([</span>
+<span class="pl-s2">    <span class="pl-s1"><span class="pl-pds">'</span>trim_from<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s1"><span class="pl-pds">'</span>62<span class="pl-pds">'</span></span>, </span>
+<span class="pl-s2">    <span class="pl-s1"><span class="pl-pds">'</span>trim_to<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s1"><span class="pl-pds">'</span>72<span class="pl-pds">'</span></span></span>
+<span class="pl-s2">])<span class="pl-k">-&gt;</span>to(<span class="pl-s1"><span class="pl-pds">'</span>fido.gif<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s2"></span>
+<span class="pl-s2"><span class="pl-c"># Or the same with using the shortcuts:</span></span>
+<span class="pl-s2"><span class="pl-s3">CloudConvert</span><span class="pl-k">::</span>file(<span class="pl-s1"><span class="pl-pds">'</span>fido_falls_over.mp4<span class="pl-pds">'</span></span>)<span class="pl-k">-&gt;</span>trimFrom(<span class="pl-c1">62</span>)<span class="pl-k">-&gt;</span>trimTo(<span class="pl-c1">72</span>)<span class="pl-k">-&gt;</span>to(<span class="pl-s1"><span class="pl-pds">'</span>fido.gif<span class="pl-pds">'</span></span>);</span></pre></div>
+
+<h4>
+<a id="chaining-multiple-conversions" class="anchor" href="#chaining-multiple-conversions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Chaining multiple conversions</h4>
+
+<p>You can also chain multiple conversions on one process, like this:</p>
+
+<div class="highlight highlight-php"><pre><span class="pl-s2"><span class="pl-c"># Convert a TrueType font in to all the fonts you need for a cross browser web font pack</span></span>
+<span class="pl-s2"><span class="pl-s3">CloudConvert</span><span class="pl-k">::</span>file(<span class="pl-s1"><span class="pl-pds">'</span>claw.ttf<span class="pl-pds">'</span></span>)<span class="pl-k">-&gt;</span>to(<span class="pl-s1"><span class="pl-pds">'</span>eot<span class="pl-pds">'</span></span>)<span class="pl-k">-&gt;</span>to(<span class="pl-s1"><span class="pl-pds">'</span>otf<span class="pl-pds">'</span></span>)<span class="pl-k">-&gt;</span>to(<span class="pl-s1"><span class="pl-pds">'</span>woff<span class="pl-pds">'</span></span>)<span class="pl-k">-&gt;</span>to(<span class="pl-s1"><span class="pl-pds">'</span>svg<span class="pl-pds">'</span></span>);</span></pre></div>
+
+<h4>
+<a id="remote-files" class="anchor" href="#remote-files" aria-hidden="true"><span class="octicon octicon-link"></span></a>Remote files</h4>
+
+<p>It will also work with converting remote files (just make sure you provide a path to save it to)</p>
+
+<div class="highlight highlight-php"><pre><span class="pl-s2"><span class="pl-c"># Convert Google's SVG logo hosted on Wikipedia to a png on your server</span></span>
+<span class="pl-s2"><span class="pl-s3">CloudConvert</span><span class="pl-k">::</span>file(<span class="pl-s1"><span class="pl-pds">'</span>http://upload.wikimedia.org/wikipedia/commons/a/aa/Logo_Google_2013_Official.svg<span class="pl-pds">'</span></span>)</span>
+<span class="pl-s2">            <span class="pl-k">-&gt;</span>to(<span class="pl-s1"><span class="pl-pds">'</span>images/google.png<span class="pl-pds">'</span></span>);</span></pre></div>
+
+<h3>
+<a id="website-screenshot" class="anchor" href="#website-screenshot" aria-hidden="true"><span class="octicon octicon-link"></span></a>Website screenshot</h3>
+
+<p>CloudConvert will also take a screenshot of a website and convert it to an image or pdf for you:</p>
+
+<div class="highlight highlight-php"><pre><span class="pl-s2"><span class="pl-c"># Take a screenshot with the default options: 1024px with with full height of webpage</span></span>
+<span class="pl-s2"><span class="pl-s3">CloudConvert</span><span class="pl-k">::</span>website(<span class="pl-s1"><span class="pl-pds">'</span>www.nyan.cat<span class="pl-pds">'</span></span>)<span class="pl-k">-&gt;</span>to(<span class="pl-s1"><span class="pl-pds">'</span>screenshots/nyan.jpg<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s2"></span>
+<span class="pl-s2"></span>
+<span class="pl-s2"><span class="pl-c"># You can also specify the width and the height as converter options</span></span>
+<span class="pl-s2"><span class="pl-s3">CloudConvert</span><span class="pl-k">::</span>website(<span class="pl-s1"><span class="pl-pds">'</span>www.nyan.cat<span class="pl-pds">'</span></span>)</span>
+<span class="pl-s2">            <span class="pl-k">-&gt;</span>withOptions([</span>
+<span class="pl-s2">                 <span class="pl-s1"><span class="pl-pds">'</span>screen_width<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">1024</span>,</span>
+<span class="pl-s2">                 <span class="pl-s1"><span class="pl-pds">'</span>screen_height<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">700</span></span>
+<span class="pl-s2">            ])<span class="pl-k">-&gt;</span>to(<span class="pl-s1"><span class="pl-pds">'</span>screenshots/nyan.png<span class="pl-pds">'</span></span>);</span></pre></div>
+
+<h3>
+<a id="converting-to-and-from-external-storage-options" class="anchor" href="#converting-to-and-from-external-storage-options" aria-hidden="true"><span class="octicon octicon-link"></span></a>Converting to and from external storage options</h3>
+
+<p>At the moment CloudConvert let you use <em>FTP</em> or <em>Amazon S3</em> as storage options. However it looks like in the future they will add <em>Google Drive</em> and <em>Dropbox</em> to the API</p>
+
+<blockquote>
+<p>**Please note: **
+To use these storage options you will need to provide the configuration in the <code>config/packages/robbiep/cloudconvert-laravel/config.php</code> </p>
+</blockquote>
+
+<div class="highlight highlight-php"><pre><span class="pl-s2"><span class="pl-c"># Lets say you have a PDF and you want to convert it to an ePub file and </span></span>
+<span class="pl-s2"><span class="pl-c"># store it on your Amazon S3 bucket (defined in your config). It's this simple:</span></span>
+<span class="pl-s2"><span class="pl-s3">CloudConvert</span><span class="pl-k">::</span>file(<span class="pl-s1"><span class="pl-pds">'</span>/a/local/path/garfield.pdf<span class="pl-pds">'</span></span>)<span class="pl-k">-&gt;</span>to(<span class="pl-s3">CloudConvert</span><span class="pl-k">::</span>S3(<span class="pl-s1"><span class="pl-pds">'</span>Garfield_converted.epub<span class="pl-pds">'</span></span>));</span>
+<span class="pl-s2"></span>
+<span class="pl-s2"></span>
+<span class="pl-s2"><span class="pl-c"># You can also override the default options by providing them as an array as the second argument</span></span>
+<span class="pl-s2"><span class="pl-s3">CloudConvert</span><span class="pl-k">::</span>file(<span class="pl-s1"><span class="pl-pds">'</span>/a/local/path/garfield.pdf<span class="pl-pds">'</span></span>)</span>
+<span class="pl-s2">            <span class="pl-k">-&gt;</span>to(<span class="pl-s3">CloudConvert</span><span class="pl-k">::</span>S3(<span class="pl-s1"><span class="pl-pds">'</span>Garfield_converted.epub<span class="pl-pds">'</span></span>, [</span>
+<span class="pl-s2">                <span class="pl-s1"><span class="pl-pds">'</span>bucket<span class="pl-pds">'</span></span>  <span class="pl-k">=&gt;</span> <span class="pl-s1"><span class="pl-pds">'</span>a-different-bucket<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s2">                <span class="pl-s1"><span class="pl-pds">'</span>acl<span class="pl-pds">'</span></span>     <span class="pl-k">=&gt;</span> <span class="pl-s1"><span class="pl-pds">'</span>public-read<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s2">                <span class="pl-s1"><span class="pl-pds">'</span>region<span class="pl-pds">'</span></span>  <span class="pl-k">=&gt;</span> <span class="pl-s1"><span class="pl-pds">'</span>us-east-1<span class="pl-pds">'</span></span></span>
+<span class="pl-s2">            ]));</span>
+<span class="pl-s2"></span>
+<span class="pl-s2"></span>
+<span class="pl-s2"><span class="pl-c"># Now you want to convert the file on your S3 to a txt file and store it on a server via FTP</span></span>
+<span class="pl-s2"><span class="pl-s3">CloudConvert</span><span class="pl-k">::</span>file(<span class="pl-s3">CloudConvert</span><span class="pl-k">::</span>S3(<span class="pl-s1"><span class="pl-pds">'</span>Garfield_converted.epub<span class="pl-pds">'</span></span>))</span>
+<span class="pl-s2">            <span class="pl-k">-&gt;</span>to(<span class="pl-s3">CloudConvert</span><span class="pl-k">::</span>FTP(<span class="pl-s1"><span class="pl-pds">'</span>path/to/garfield.txt<span class="pl-pds">'</span></span>));</span></pre></div>
+
+<p>It's that simple. The storage options <code>CloudConvert::S3($path)</code> and <code>CloudConvert::FTP($path)</code> can be used for both input files and output files.</p>
+
+<h3>
+<a id="non-blocking-conversion-using-a-callback-url" class="anchor" href="#non-blocking-conversion-using-a-callback-url" aria-hidden="true"><span class="octicon octicon-link"></span></a>Non-blocking conversion using a callback URL</h3>
+
+<p>If the conversion might take a long you could use:</p>
+
+<div class="highlight highlight-php"><pre><span class="pl-s2"><span class="pl-c"># Script: send_conversion.php</span></span>
+<span class="pl-s2"><span class="pl-s3">CloudConvert</span><span class="pl-k">::</span>file(<span class="pl-s1"><span class="pl-pds">'</span>/a/path/to/file.mov<span class="pl-pds">'</span></span>)</span>
+<span class="pl-s2">            <span class="pl-k">-&gt;</span>callback(<span class="pl-s1"><span class="pl-pds">'</span>http://myserver.com/save_file.php<span class="pl-pds">'</span></span>)</span>
+<span class="pl-s2">            <span class="pl-k">-&gt;</span>convert(<span class="pl-s1"><span class="pl-pds">'</span>mp4<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s2"></span>
+<span class="pl-s2"><span class="pl-c"># Script save_file.php</span></span>
+<span class="pl-s2"><span class="pl-s3">CloudConvert</span><span class="pl-k">::</span>useProcess(<span class="pl-vo">$_REQUEST</span>[<span class="pl-s1"><span class="pl-pds">'</span>url<span class="pl-pds">'</span></span>])</span>
+<span class="pl-s2">            <span class="pl-k">-&gt;</span>save();</span></pre></div>
+
+<h3>
+<a id="non-blocking-conversion-using-a-queue" class="anchor" href="#non-blocking-conversion-using-a-queue" aria-hidden="true"><span class="octicon octicon-link"></span></a>Non-blocking conversion using a queue</h3>
+
+<p>To use queues you will need have set-up either beanstalk or iron in your <code>config/queue.php</code></p>
+
+<div class="highlight highlight-php"><pre><span class="pl-s2"><span class="pl-c"># The queue will check every second if the conversion has finished. </span></span>
+<span class="pl-s2"><span class="pl-c"># It times out after 120 seconds (configurable).</span></span>
+<span class="pl-s2"><span class="pl-s3">CloudConvert</span><span class="pl-k">::</span>file(<span class="pl-s1"><span class="pl-pds">'</span>/a/path/to/file.mov<span class="pl-pds">'</span></span>)<span class="pl-k">-&gt;</span>queue(<span class="pl-s1"><span class="pl-pds">'</span>to<span class="pl-pds">'</span></span>, <span class="pl-s1"><span class="pl-pds">'</span>/a/path/to/file.mp4<span class="pl-pds">'</span></span>)</span></pre></div>
+
+<h3>
+<a id="conversion-types" class="anchor" href="#conversion-types" aria-hidden="true"><span class="octicon octicon-link"></span></a>Conversion types</h3>
+
+<p>You can view the conversion types using the <code>conversionTypes()</code> method. It always returns a Laravel collection.</p>
+
+<div class="highlight highlight-php"><pre><span class="pl-s2"><span class="pl-c"># To get all possible types</span></span>
+<span class="pl-s2"><span class="pl-vo">$types</span> <span class="pl-k">=</span> <span class="pl-s3">CloudConvert</span><span class="pl-k">::</span>conversionTypes();</span>
+<span class="pl-s2"></span>
+<span class="pl-s2"></span>
+<span class="pl-s2"><span class="pl-c"># To get all possible types in a specific group</span></span>
+<span class="pl-s2"><span class="pl-vo">$types</span> <span class="pl-k">=</span> <span class="pl-s3">CloudConvert</span><span class="pl-k">::</span>conversionTypes(<span class="pl-s1"><span class="pl-pds">'</span>video<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s2"></span>
+<span class="pl-s2"></span>
+<span class="pl-s2"><span class="pl-c"># To get all possible output formats if you know the input format</span></span>
+<span class="pl-s2"><span class="pl-vo">$types</span> <span class="pl-k">=</span> <span class="pl-s3">CloudConvert</span><span class="pl-k">::</span>input(<span class="pl-s1"><span class="pl-pds">'</span>pdf<span class="pl-pds">'</span></span>)<span class="pl-k">-&gt;</span>conversionTypes();</span>
+<span class="pl-s2"></span>
+<span class="pl-s2"></span>
+<span class="pl-s2"><span class="pl-c"># Same if you know the output format and want to see what can be inputted</span></span>
+<span class="pl-s2"><span class="pl-vo">$types</span> <span class="pl-k">=</span> <span class="pl-s3">CloudConvert</span><span class="pl-k">::</span>output(<span class="pl-s1"><span class="pl-pds">'</span>jpg<span class="pl-pds">'</span></span>)<span class="pl-k">-&gt;</span>conversionTypes();</span></pre></div>
+
+<h3>
+<a id="processes-status" class="anchor" href="#processes-status" aria-hidden="true"><span class="octicon octicon-link"></span></a>Processes status</h3>
+
+<p>You may want to list all your processes, running, finished and failed. It always returns a Laravel collection.</p>
+
+<div class="highlight highlight-php"><pre><span class="pl-s2"><span class="pl-c"># To get all possible types</span></span>
+<span class="pl-s2"><span class="pl-vo">$processes</span> <span class="pl-k">=</span> <span class="pl-s3">CloudConvert</span><span class="pl-k">::</span>processes();</span>
+<span class="pl-s2"></span>
+<span class="pl-s2"><span class="pl-c"># To delete a process by ID</span></span>
+<span class="pl-s2"><span class="pl-s3">CloudConvert</span><span class="pl-k">::</span>deleteProcess(<span class="pl-vo">$process_id</span>);</span></pre></div>
+
+<h2>
+<a id="artisan-commands" class="anchor" href="#artisan-commands" aria-hidden="true"><span class="octicon octicon-link"></span></a>Artisan commands</h2>
+
+<p>If you want to do quick conversions or calls to the API from your console, you can use the following commands:</p>
+
+<h4>
+<a id="convert-a-file" class="anchor" href="#convert-a-file" aria-hidden="true"><span class="octicon octicon-link"></span></a>Convert a file</h4>
+
+<div class="highlight highlight-bash"><pre><span class="pl-c"># Options: --opions, --queue, --storage, --path</span>
+php artisan cloudconvert:convert video.mov mp4
+php artisan cloudconvert:convert /path/to/video.mov converted.mp4 --storage=<span class="pl-s1"><span class="pl-pds">'</span>s3<span class="pl-pds">'</span></span></pre></div>
+
+<h4>
+<a id="website-screenshot-1" class="anchor" href="#website-screenshot-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Website screenshot</h4>
+
+<div class="highlight highlight-bash"><pre><span class="pl-c"># Options: --opions, --storage, --path</span>
+php artisan cloudconvert:website www.laravel.com jpg</pre></div>
+
+<h4>
+<a id="processes-list" class="anchor" href="#processes-list" aria-hidden="true"><span class="octicon octicon-link"></span></a>Processes list</h4>
+
+<div class="highlight highlight-bash"><pre><span class="pl-c"># Options: --delete (used with process_id)</span>
+<span class="pl-c"># Argument: process_id (optional) - will show the status of that process</span>
+php artisan cloudconvert:processes <span class="pl-k">&lt;</span>process_id<span class="pl-k">&gt;</span></pre></div>
+
+<h4>
+<a id="conversion-types-1" class="anchor" href="#conversion-types-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Conversion types</h4>
+
+<div class="highlight highlight-bash"><pre><span class="pl-c"># Options: --input, --output </span>
+<span class="pl-c"># (both optional - however if you included both you will see all the </span>
+<span class="pl-c"># possible converter options for those types, not just the default ones)</span>
+php artisan cloudconvert:types
+php artisan cloudconvert:types --input=<span class="pl-s1"><span class="pl-pds">'</span>nice.pdf<span class="pl-pds">'</span></span>
+php artisan cloudconvert:types --input=<span class="pl-s1"><span class="pl-pds">'</span>doc<span class="pl-pds">'</span></span> --output=<span class="pl-s1"><span class="pl-pds">'</span>jpg<span class="pl-pds">'</span></span></pre></div>
+
+<h2>
+<a id="todo" class="anchor" href="#todo" aria-hidden="true"><span class="octicon octicon-link"></span></a>Todo</h2>
+
+<ul>
+<li>[x] Release</li>
+<li>[ ] Write some more tests</li>
+<li>[ ] Enable merging of multiple files</li>
+<li>[x] Enable multiple conversions using one process</li>
+<li>[ ] Refactor the commands</li>
+</ul>
+
+<h2>
+<a id="contributing" class="anchor" href="#contributing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contributing</h2>
+
+<ol>
+<li>Fork it</li>
+<li>Create your feature branch: <code>git checkout -b my-new-feature</code>
+</li>
+<li>Commit your changes: <code>git commit -am 'Add some feature'</code>
+</li>
+<li>Push to the branch: <code>git push origin my-new-feature</code>
+</li>
+<li>Submit a pull request </li>
+</ol>
+
+<h2>
+<a id="credits" class="anchor" href="#credits" aria-hidden="true"><span class="octicon octicon-link"></span></a>Credits</h2>
+
+<p>Thanks to <a href="http://www.lunaweb.de/">Lunaweb Ltd.</a> for their API. Go <a href="https://cloudconvert.org/page/api">check it out</a>.</p>
+
+<h2>
+<a id="resources" class="anchor" href="#resources" aria-hidden="true"><span class="octicon octicon-link"></span></a>Resources</h2>
+
+<ul>
+<li><a href="https://cloudconvert.org/page/api">API Documentation</a></li>
+<li><a href="https://cloudconvert.org/formats">Conversion Types</a></li>
+<li><a href="https://cloudconvert.org/blog">CloudConvert Blog</a></li>
+</ul>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/robbiepaul/cloudconvert-laravel/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/robbiepaul/cloudconvert-laravel/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/robbiepaul/cloudconvert-laravel"></a> is maintained by <a href="https://github.com/robbiepaul">robbiepaul</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
