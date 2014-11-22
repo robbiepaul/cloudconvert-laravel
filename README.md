@@ -233,6 +233,7 @@ php artisan cloudconvert:types --input='doc' --output='jpg'
 ## Todo
 - [x] Release
 - [ ] Write some more tests
+- [ ] Enable merging of multiple files
 - [x] Enable multiple conversions using one process
 - [ ] Refactor the commands
  
