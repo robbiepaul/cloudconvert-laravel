@@ -24,14 +24,11 @@ class HttpClientAdapter implements HttpClientInterface {
      * @param array $query
      * @return bool|mixed
      */
-    public function post($url, $params = [], $query = null)
+    public function post($url, $params = [], $query = [])
     {
-        $opts = [ 'body' => $params ];
-        if(!empty($query)) {
-            $opts['query'] = $query;
-        }
+        $opts = [ 'body' => $params + $query ];
         $this->response = $this->client->post($url,  $opts);
-        return (isset($query['callback'])) ? true : $this->response->json(['object' => true]);
+        return $this->response->json(['object' => true]);
     }
 
     /**
@@ -47,7 +44,7 @@ class HttpClientAdapter implements HttpClientInterface {
             $opts['query'] = $query;
         }
         $this->response = $this->client->get($url, $opts);
-        return (isset($query['callback'])) ? true : $this->response->json(['object' => true]);
+        return $this->response->json(['object' => true]);
     }
 
     /**

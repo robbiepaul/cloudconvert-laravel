@@ -25,6 +25,7 @@ class Process {
     private $output;
     private $output_format;
     private $input_format;
+    private $options;
 
     /**
      * @param mixed $data
@@ -42,7 +43,7 @@ class Process {
         if(is_string($data) && strstr($data, '//')) {
             $this->url = $data;
             $this->fixURL();
-            //$this->status();
+            $this->status();
         }
     }
 
@@ -57,7 +58,8 @@ class Process {
     protected function process($params = [], $endpoint = '', $method = 'post')
     {
         $this->checkURLisOK();
-        $response = $this->http->{$method}($this->url . $endpoint, $params);
+        $response = $this->http->{$method}($this->url . $endpoint, $params, $this->getQueryOptions());
+
         return $response;
     }
 
@@ -252,6 +254,30 @@ class Process {
         if(!$output instanceof Convert) {
             throw new InvalidArgumentException('Output is not convertable');
         }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getQueryOptions()
+    {
+        return $this->options;
+    }
+
+    /**
+     * @param mixed $options
+     */
+    public function setQueryOptions($options)
+    {
+        $this->options = $options;
+    }
+
+    public function compareOutput(Convert $output)
+    {
+        if($this->isFinished() &&   $this->output->ext == $output->getFormat()) {
+            return true;
+        }
+        throw new \Exception('Output format provided does not match the format converted');
     }
 
 

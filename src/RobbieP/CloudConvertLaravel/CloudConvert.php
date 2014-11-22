@@ -123,13 +123,12 @@ class CloudConvert
     public function convert($type = null)
     {
         $this->validateConversion($type);
-        if ($type instanceof Storage) {
-            $this->setOutput(new ConvertStorage($type));
-        } else {
-            $this->setOutput(new ConvertLocalFile($type));
-        }
-
+        $this->initOutput($type);
         $this->startProcess();
+
+        if(isset($this->options['callback'])) {
+            $this->convertFile();
+        }
 
         return $this;
     }
@@ -140,9 +139,13 @@ class CloudConvert
      * @internal param null $path
      * @return $this|CloudConvert
      */
-    public function save()
+    public function save($output = null)
     {
-        if ($this->process->isFinished()) {
+        $this->checkOutput($output);
+        // if !output and $output not null - create new output object
+        // check output given is same as output to be downloaded
+
+        if ($this->getProcess()->isFinished()) {
             return $this->downloadConvertedFile();
         }
 
@@ -156,7 +159,7 @@ class CloudConvert
     public function convertFile()
     {
         $this->prepareProcessForConversion();
-        $this->process->convert($this->getInput(), $this->getOutput());
+        $this->getProcess()->convert($this->getInput(), $this->getOutput());
     }
 
     /**
@@ -253,10 +256,9 @@ class CloudConvert
             'apikey' => $this->getApiKey()
         ]);
 
-        if (!empty($this->options['callback'])) {
-            return true;
-        }
-        return $this->setProcess(new Process($response, $this->getInputFormat(), $this->getOutputFormat()));
+        $this->setProcess(new Process($response, $this->getInputFormat(), $this->getOutputFormat()));
+
+        return $this;
     }
 
     /**
@@ -276,6 +278,7 @@ class CloudConvert
     public function useProcess($url)
     {
         $this->setProcess(new Process($url));
+
         return $this;
     }
 
@@ -286,7 +289,7 @@ class CloudConvert
      */
     protected function start($endpoint = '/', $params = [])
     {
-        return $this->http->post($this->api_url . $endpoint, $params, $this->getQueryOptions());
+        return $this->http->post($this->api_url . $endpoint, $params);
     }
 
     /**
@@ -415,9 +418,11 @@ class CloudConvert
      */
     private function downloadConvertedFile()
     {
-        $data = $this->process->download();
-        $this->getOutput()->setData($data);
-        $this->getOutput()->save();
+        $data = $this->getProcess()->download();
+        if($this->hasOutput()) {
+            $this->getOutput()->setData($data);
+            $this->getOutput()->save();
+        }
         return $this;
     }
 
@@ -947,6 +952,7 @@ class CloudConvert
     {
         $this->getOutput()->setConverterOptions($this->converteroptions);
         $this->getOutput()->setPreset($this->preset);
+        $this->getProcess()->setQueryOptions($this->options);
     }
 
     /**
@@ -976,6 +982,41 @@ class CloudConvert
 		$instance->setOptions(array_merge(['path' => $path], $options));
 		return $instance;
 	}
+
+    /**
+     * @return bool
+     */
+    private function hasOutput()
+    {
+        return !!$this->getOutput();
+    }
+
+    /**
+     * @param null $output
+     * @throws \Exception
+     */
+    private function checkOutput($output = null)
+    {
+        if(! $this->hasOutput() && is_null($output) )
+            throw new \Exception('Please provide the output path');
+
+        if(! $this->hasOutput() && ! is_null($output) ) {
+            $this->initOutput($output);
+            $this->getProcess()->compareOutput($this->getOutput());
+        }
+    }
+
+    /**
+     * @param $type
+     */
+    private function initOutput($type)
+    {
+        if ($type instanceof Storage) {
+            $this->setOutput(new ConvertStorage($type));
+        } else {
+            $this->setOutput(new ConvertLocalFile($type));
+        }
+    }
 
 
 }
