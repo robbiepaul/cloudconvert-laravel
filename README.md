@@ -148,16 +148,17 @@ CloudConvert::file(CloudConvert::S3('Garfield_converted.epub'))
 It's that simple. The storage options `CloudConvert::S3($path)` and `CloudConvert::FTP($path)` can be used for both input files and output files.
 
 ### Non-blocking conversion using a callback URL
-If the conversion might take a long you could use:
+When the conversion might take a long time you could use:
 ```php
 # Script: send_conversion.php
 CloudConvert::file('/a/path/to/file.mov')
             ->callback('http://myserver.com/save_file.php')
             ->convert('mp4');
+            
 
 # Script save_file.php
 CloudConvert::useProcess($_REQUEST['url'])
-            ->save();
+            ->save('/path/converted.mp4');
 ```
 
 ### Non-blocking conversion using a queue
@@ -169,7 +170,7 @@ CloudConvert::file('/a/path/to/file.mov')->queue('to', '/a/path/to/file.mp4')
 ```
 
 ### Conversion types
-You can view the conversion types using the `conversionTypes()` method. It always returns a Laravel collection.
+You can view the conversion types using the `conversionTypes()` method. It always returns `Illuminate\Support\Collection`.
 ```php
 # To get all possible types
 $types = CloudConvert::conversionTypes();
@@ -188,7 +189,7 @@ $types = CloudConvert::output('jpg')->conversionTypes();
 ```
 
 ### Processes status
-You may want to list all your processes, running, finished and failed. It always returns a Laravel collection.
+You may want to list all your processes, running, finished and failed. It always returns a `Illuminate\Support\Collection`.
 ```php
 # To get all possible types
 $processes = CloudConvert::processes();
@@ -202,7 +203,7 @@ If you want to do quick conversions or calls to the API from your console, you c
 
 #### Convert a file
 ```bash
-# Options: --opions, --queue, --storage, --path
+# Options: --opions, --background, --storage, --path
 php artisan cloudconvert:convert video.mov mp4
 php artisan cloudconvert:convert /path/to/video.mov converted.mp4 --storage='s3'
 ```
