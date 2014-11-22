@@ -37,7 +37,7 @@ One more step.
 You need to publish the config `php artisan config:publish robbiep/cloudconvert-laravel`
 
 Just enter your API key in `config/packages/robbiep/cloudconvert-laravel/config.php` 
-> You can get your free API key by just registering at [https://cloudconvert.org](https://cloudconvert.org)
+> You can get your free API key by registering at [https://cloudconvert.org](https://cloudconvert.org)
 
 
 Now you can use CloudConvert in your application!
