@@ -230,6 +230,16 @@ php artisan cloudconvert:types
 php artisan cloudconvert:types --input='nice.pdf'
 php artisan cloudconvert:types --input='doc' --output='jpg'
 ```
+## Using this package without Laravel
+You still need to use composer. Type `composer require robbiep/cloudconvert-laravel` to download the files, then you can use the package like this:
+
+```php
+require_once('vendor/autoload.php');
+
+$cloudConvert = new RobbieP\CloudConvertLaravel\CloudConvert(['api_key' => 'API_KEY_HERE']);
+
+$cloudConvert->file('randomuser.jpg')->to('png');
+```
 
 ## Todo
 - [x] Release
