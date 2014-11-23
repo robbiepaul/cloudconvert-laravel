@@ -165,11 +165,11 @@ abstract class Convert {
 
 	/**
 	 * @param mixed $filename
-	 * @param null $ext
+	 * @param null|string $ext
 	 */
-	public function setFilename($filename, $ext = null)
+	public function setFilename($filename, $ext = '')
 	{
-		$this->filename = (is_null($ext)) ? $filename : preg_replace("/{$this->parseExtension($filename)}$/", $ext, $filename);
+		$this->filename = empty($ext) ? $filename : preg_replace("/{$this->parseExtension($filename)}$/", $ext, $filename);
 	}
 
 	/**

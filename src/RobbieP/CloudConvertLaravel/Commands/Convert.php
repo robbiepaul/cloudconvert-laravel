@@ -9,10 +9,6 @@ use Symfony\Component\Console\Input\InputArgument;
 class Convert extends Command {
 
 	use CloudConvertCommandTrait;
-	/**
-	 * @var CloudConvert
-	 */
-	private $cloudConvert;
 
 
 	/**
@@ -105,22 +101,5 @@ class Convert extends Command {
 		];
 	}
 
-	private function getOutputPath($outputfile, $path)
-	{
-		if(strstr($outputfile, DIRECTORY_SEPARATOR)) {
-			return $outputfile;
-		}
-		return (empty($path)) ? $outputfile : $path.DIRECTORY_SEPARATOR.$outputfile;
-	}
-
-	private function parseOptions($options = [])
-	{
-		$o = [];
-		foreach($options as $key => $val ){
-			list($k,$v) = explode(':',$val);
-			$o[$k] = $v;
-		}
-		return $o;
-	}
 
 }

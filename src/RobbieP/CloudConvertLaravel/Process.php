@@ -21,6 +21,7 @@ class Process {
     private $step;
     private $starttime;
     private $endtime;
+    private $message;
     private $url;
     private $output;
     private $output_format;
@@ -41,8 +42,7 @@ class Process {
             $this->fill($data);
         }
         if(is_string($data) && strstr($data, '//')) {
-            $this->url = $data;
-            $this->fixURL();
+            $this->url = $this->fixURL($data);
             $this->status();
         }
     }
@@ -84,7 +84,7 @@ class Process {
     public function download()
     {
         $this->checkFileIsReadyToDownload();
-        $this->fixOutputURL();
+        $this->output->url = $this->fixURL($this->output->url);
         $data = $this->fetchFiles();
         return $data;
     }
@@ -97,12 +97,12 @@ class Process {
 
         if(empty($this->output->files))
         {
-            return $this->http->request($this->output->url)->contents();
+            return $this->http->request($this->output->url, 'get')->contents();
         }
         $data = [];
         foreach($this->output->files as $k => $file) {
             $data[$k]['filename'] = $file;
-            $data[$k]['data'] =  $this->http->request($this->output->url.'/'.$file)->contents();
+            $data[$k]['data'] =  $this->http->request($this->output->url.'/'.$file, 'get')->contents();
         }
         return $data;
     }
@@ -118,22 +118,14 @@ class Process {
     }
 
     /**
-     *
+     * @param $url
+     * @return string
      */
-    private function fixOutputURL()
+    private function fixURL($url)
     {
-        if (strpos($this->output->url, 'http') === false) {
-            $this->output->url = "https:" . $this->output->url;
-        }
-    }
-
-    /**
-     *
-     */
-    private function fixURL()
-    {
-        if (strpos($this->url, 'http') === false)
-            $this->url = "https:" . $this->url;
+        if (strpos($url, 'http') === false)
+            $url = "https:" .$url;
+        return $url;
     }
 
     /**
@@ -199,14 +191,14 @@ class Process {
     }
 
     /**
-     * @param array $data
+     * @param array|object $data
      */
     private function fill($data = [])
     {
         foreach($data as $key => $value) {
             $this->{$key} = $value;
         }
-        $this->fixURL();
+        $this->url = $this->fixURL($this->url);
     }
 
     /**

@@ -13,6 +13,7 @@
 
 namespace RobbieP\CloudConvertLaravel;
 
+use Exception;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Message\Response;
 use GuzzleHttp\Stream\Stream;
@@ -43,7 +44,7 @@ class CloudConvert
     private $input_method;
     private $input_format;
     private $output_format;
-    private $processes = [];
+    private $processes;
     private $options = [];
     private $preset = null;
     private $converteroptions;
@@ -78,7 +79,7 @@ class CloudConvert
      * @param null $input
      * @param null $output
      * @return $this
-     * @throws \Exception
+     * @throws Exception
      */
     public function make($resource, $input = null, $output = null)
     {
@@ -96,7 +97,7 @@ class CloudConvert
     /**
      * @param $file
      * @return $this
-     * @throws \Exception
+     * @throws Exception
      */
     public function file($file)
     {
@@ -118,7 +119,7 @@ class CloudConvert
     /**
      * @param null $type
      * @return $this|CloudConvert
-     * @throws \Exception
+     * @throws Exception
      */
     public function convert($type = null)
     {
@@ -134,7 +135,7 @@ class CloudConvert
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      * @internal param null $output
      * @internal param null $path
      * @return $this|CloudConvert
@@ -185,24 +186,24 @@ class CloudConvert
     /**
      * @param null $group
      * @return Collection
-     * @throws \Exception
+     * @throws Exception
      */
     public function conversionTypes($group = null)
     {
         $results = $this->http->get($this->api_url . "/conversiontypes?inputformat={$this->getInputFormat()}&outputformat={$this->getOutputFormat()}");
-        $this->types = new Collection($results);
-        if ($this->types->isEmpty()) {
-            throw new \Exception('No conversion types found');
+        $types = new Collection($results);
+        if ($types->isEmpty()) {
+            throw new Exception('No conversion types found');
         }
         if (!is_null($group)) {
-            $this->types = $this->filterTypesByGroup($this->types, $group);
+            $types = $this->filterTypesByGroup($types, $group);
         }
-        return $this->types;
+        return $types;
     }
 
     /**
      * @return Collection
-     * @throws \Exception
+     * @throws Exception
      */
     public function processes()
     {
@@ -241,7 +242,7 @@ class CloudConvert
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      * @internal param $input
      * @internal param $output
      * @return Process
@@ -295,7 +296,7 @@ class CloudConvert
     /**
      * @param $resource
      * @return mixed
-     * @throws \Exception
+     * @throws Exception
      */
     public function init($resource = null)
     {
@@ -311,7 +312,7 @@ class CloudConvert
             case $this->isRemoteStorage():
                 return $this->initFromRemoteStorage();
             default:
-                throw new \Exception("File input is not readable");
+                throw new Exception("File input is not readable");
         }
     }
 
@@ -390,7 +391,7 @@ class CloudConvert
      * In the callback URL script 'useProcess($_REQUEST['url'])'
      * @param $url
      * @return $this
-     * @throws \Exception
+     * @throws Exception
      */
     public function callback($url)
     {
@@ -403,7 +404,7 @@ class CloudConvert
      * Gets the process ready to take a screenshot of a website
      * @param $url
      * @return $this
-     * @throws \Exception
+     * @throws Exception
      */
     public function website($url)
     {
@@ -436,12 +437,12 @@ class CloudConvert
 
     /**
      * @return mixed
-     * @throws \Exception
+     * @throws Exception
      */
     public function downloadURL()
     {
         if (isset($this->process->output->url)) return $this->process->output->url;
-        throw new \Exception('Download URL not ready yet.');
+        throw new Exception('Download URL not ready yet.');
     }
 
     /**
@@ -457,20 +458,6 @@ class CloudConvert
 
         $this->api_key = is_string($config) ? $config : (is_object($this->config) ? $this->config->get('api_key') : null  );
     }
-
-    /**
-     * @param $data
-     * @return $this
-     */
-    private function forceDownload($data)
-    {
-        $filename = (strstr($this->input, '.' . $this->input_format)) ? str_replace('.' . $this->input_format, '.' . $this->output_format, basename($this->input)) : "file.{$this->output_format}";
-        return \Illuminate\Support\Facades\Response::make($data, 200)
-            ->header('Content-Type', 'application/octet-stream')
-            ->header('Content-Transfer-Encoding', 'Binary')
-            ->header('Content-disposition', "attachment; filename={$filename}");
-    }
-
 
 	/**
 	 *
@@ -505,15 +492,12 @@ class CloudConvert
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     private function validateFormats()
     {
-        if (!$this->getInputFormat()) {
-            throw new \Exception('No input format provided');
-        }
-        if (!$this->getOutputFormat()) {
-            throw new \Exception('No output format provided');
+        if (!$this->getInputFormat() || !$this->getOutputFormat()) {
+            throw new Exception('Invalid formats provided');
         }
     }
 
@@ -526,22 +510,13 @@ class CloudConvert
     }
 
     /**
-     * @param $type
-     * @throws \Exception
+     * @throws Exception
      */
-    private function validateConversion($type)
+    private function validateConversion()
     {
         if (!$this->input) {
-            throw new \Exception('Please set the file before converting');
+            throw new Exception('Please set the file before converting');
         }
-    }
-
-    /**
-     * @return array
-     */
-    private function getQueryOptions()
-    {
-        return $this->options;
     }
 
     /**
@@ -563,7 +538,7 @@ class CloudConvert
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      * @internal param $path
      * @return $this|CloudConvert
      */
@@ -573,18 +548,18 @@ class CloudConvert
         if ($this->process->waitForConversion()) {
             return $this->downloadConvertedFile();
         }
-        throw new \Exception('Problem saving file');
+        throw new Exception('Problem saving file');
     }
 
 
     /**
      * @param $url
-     * @throws \Exception
+     * @throws Exception
      */
     public function validateURL($url)
     {
         if (!filter_var($url, FILTER_VALIDATE_URL)) {
-            throw new \Exception('Not a valid URL. Must be fully qualified including protocol.');
+            throw new Exception('Not a valid URL. Must be fully qualified including protocol.');
         }
     }
 
@@ -627,12 +602,12 @@ class CloudConvert
 
     /**
      * @param $provider
-     * @throws \Exception
+     * @throws Exception
      */
     public function validateProvider($provider)
     {
         if (!in_array($provider, $this->storage_options)) {
-            throw new \Exception ($provider . ' is not supported. Please choose from: ' . implode(', ', $this->storage_options));
+            throw new Exception ($provider . ' is not supported. Please choose from: ' . implode(', ', $this->storage_options));
         }
     }
 
@@ -993,12 +968,12 @@ class CloudConvert
 
     /**
      * @param null $output
-     * @throws \Exception
+     * @throws Exception
      */
     private function checkOutput($output = null)
     {
         if(! $this->hasOutput() && is_null($output) )
-            throw new \Exception('Please provide the output path');
+            throw new Exception('Please provide the output path');
 
         if(! $this->hasOutput() && ! is_null($output) ) {
             $this->initOutput($output);

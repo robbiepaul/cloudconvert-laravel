@@ -4,8 +4,6 @@
 namespace RobbieP\CloudConvertLaravel;
 
 
-use Config;
-
 class StorageFTP extends Storage implements  StorageInterface {
 
 	const INPUT_METHOD = 'ftp';

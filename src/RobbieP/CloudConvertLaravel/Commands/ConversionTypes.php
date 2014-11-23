@@ -11,6 +11,7 @@ use Symfony\Component\Console\Input\InputArgument;
 class ConversionTypes extends Command
 {
 
+    use CloudConvertCommandTrait;
     /**
      * The console command name.
      *
@@ -25,7 +26,6 @@ class ConversionTypes extends Command
      */
     protected $description = 'Show all available conversion types';
 
-    private $cloudConvert;
 
     /**
      * Create a new command instance.
@@ -50,6 +50,8 @@ class ConversionTypes extends Command
         $output = $this->option('outputformat');
         $group = $this->option('group');
         $types = $this->cloudConvert->input($input)->output($output)->conversionTypes($group);
+        $headers = [];
+        $rows = [];
         if (empty($output) || empty($input)) {
             list($headers, $rows) = $this->showAllTypesTable($types);
         } else if (!empty($output) && !empty($input)) {

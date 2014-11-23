@@ -17,7 +17,6 @@ class Queued {
 		$action = $array['action'];
 		$options = $array['options'];
 		$data = $array['data'];
-		$path = is_array($options) ? $options['path'] : $options;
 		$process = new CloudConvert($data['api_key']);
 		$fileSystem = new Filesystem();
 		$process->setFilesystem($fileSystem);
