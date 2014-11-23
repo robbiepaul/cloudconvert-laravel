@@ -62,7 +62,7 @@ class CloudConvertLaravelServiceProvider extends ServiceProvider {
 
 	public function registerCloudConvertCommands()
 	{
-		$this->app['cloudconvert.convert'] = $this->app->share(function ($app)
+		$this->app['cloudconvert.convert'] = $this->app->share(function()
 		{
 			$cloudconvert = $this->app->make('RobbieP\CloudConvertLaravel\CloudConvert');
 
@@ -70,7 +70,7 @@ class CloudConvertLaravelServiceProvider extends ServiceProvider {
 		});
 		$this->commands('cloudconvert.convert');
 
-		$this->app['cloudconvert.types'] = $this->app->share(function ($app)
+		$this->app['cloudconvert.types'] = $this->app->share(function ()
 		{
 			$cloudconvert = $this->app->make('RobbieP\CloudConvertLaravel\CloudConvert');
 
@@ -78,7 +78,7 @@ class CloudConvertLaravelServiceProvider extends ServiceProvider {
 		});
 		$this->commands('cloudconvert.types');
 
-		$this->app['cloudconvert.processes'] = $this->app->share(function ($app)
+		$this->app['cloudconvert.processes'] = $this->app->share(function ()
 		{
 			$cloudconvert = $this->app->make('RobbieP\CloudConvertLaravel\CloudConvert');
 
@@ -86,7 +86,7 @@ class CloudConvertLaravelServiceProvider extends ServiceProvider {
 		});
 		$this->commands('cloudconvert.processes');
 
-		$this->app['cloudconvert.website'] = $this->app->share(function ($app)
+		$this->app['cloudconvert.website'] = $this->app->share(function ()
 		{
 			$cloudconvert = $this->app->make('RobbieP\CloudConvertLaravel\CloudConvert');
 

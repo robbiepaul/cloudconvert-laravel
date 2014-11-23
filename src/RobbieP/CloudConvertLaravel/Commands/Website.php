@@ -25,8 +25,6 @@ class Website extends Command {
 	protected $description = 'Take a screenshot of any website';
 
 
-	protected $cloudConvert;
-
 	/**
 	 * Create a new command instance.
 	 *
@@ -95,31 +93,5 @@ class Website extends Command {
 		];
 	}
 
-	/**
-	 * @param $outputfile
-	 * @param $path
-	 * @return string
-     */
-	private function getOutputPath($outputfile, $path)
-	{
-		if(strstr($outputfile, DIRECTORY_SEPARATOR)) {
-			return $outputfile;
-		}
-		return (empty($path)) ? $outputfile : $path.DIRECTORY_SEPARATOR.$outputfile;
-	}
-
-	/**
-	 * @param array $options
-	 * @return array
-     */
-	private function parseOptions($options = [])
-	{
-		$o = [];
-		foreach($options as $key => $val ){
-			list($k,$v) = explode(':',$val);
-			$o[$k] = $v;
-		}
-		return $o;
-	}
 
 }

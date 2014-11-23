@@ -10,7 +10,7 @@ class Processes extends Command {
 
 	use CloudConvertCommandTrait;
 
-	private $cloudConvert;
+
 	/**
 	 * The console command name.
 	 *

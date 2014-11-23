@@ -3,8 +3,6 @@
 namespace RobbieP\CloudConvertLaravel;
 
 
-use Config;
-
 class StorageS3 extends Storage implements StorageInterface {
 
 	const INPUT_METHOD = 's3';
@@ -15,6 +13,7 @@ class StorageS3 extends Storage implements StorageInterface {
 	public $path;
 	public $acl;
 	public $region;
+	private $config;
 
 	function __construct($config) {
 		$this->config = $config;

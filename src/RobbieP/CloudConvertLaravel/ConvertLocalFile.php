@@ -3,7 +3,7 @@
 namespace RobbieP\CloudConvertLaravel;
 
 use Illuminate\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\File\UploadedFile as Uploaded;
 
 class ConvertLocalFile extends Convert implements ConvertInterface {
 
@@ -12,7 +12,7 @@ class ConvertLocalFile extends Convert implements ConvertInterface {
 		parent::__construct($file, $converteroptions);
 		$this->setMethod(CloudConvert::INPUT_UPLOAD);
 		$this->setFilesystem();
-		if($file instanceof UploadedFile) {
+		if($file instanceof Uploaded) {
 			$this->setFile($file->getFilename());
 		}
 	}
