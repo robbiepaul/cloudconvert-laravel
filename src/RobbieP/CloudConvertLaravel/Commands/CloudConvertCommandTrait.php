@@ -44,6 +44,9 @@ trait CloudConvertCommandTrait {
         return (empty($path)) ? $outputfile : $path.DIRECTORY_SEPARATOR.$outputfile;
     }
 
+    /**
+     * @param string $question
+     */
     abstract function ask($question, $default = null);
 
 } 

@@ -51,6 +51,9 @@ class ConvertLocalFile extends Convert implements ConvertInterface {
 		];
 	}
 
+	/**
+	 * @param string $file_path
+	 */
 	private function saveFile($file_path, $data)
 	{
 		if(is_array($data)) {

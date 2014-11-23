@@ -42,7 +42,7 @@ class Processes extends Command {
 	/**
 	 * Execute the console command.
 	 *
-	 * @return mixed
+	 * @return null|boolean
 	 */
 	public function fire()
 	{

@@ -148,7 +148,7 @@ abstract class Convert {
 	}
 
 	/**
-	 * @return mixed
+	 * @return string
 	 */
 	public function getPath()
 	{

@@ -3,7 +3,6 @@
 namespace RobbieP\CloudConvertLaravel;
 
 use Illuminate\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ConvertRemoteFile extends Convert implements ConvertInterface {
 

@@ -5,7 +5,6 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use RobbieP\CloudConvertLaravel\CloudConvert;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputArgument;
 
 
 class ConversionTypes extends Command
@@ -90,7 +89,7 @@ class ConversionTypes extends Command
     }
 
     /**
-     * @param $types
+     * @param Collection $types
      * @return array
      */
     private function showAllTypesTable($types)
@@ -105,7 +104,7 @@ class ConversionTypes extends Command
     }
 
     /**
-     * @param $types
+     * @param Collection $types
      * @return array
      */
     private function showAllOptionsTable($types)
