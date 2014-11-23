@@ -2,9 +2,6 @@
 
 namespace RobbieP\CloudConvertLaravel;
 
-use Illuminate\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-
 class ConvertStorage extends Convert implements ConvertInterface {
 
 	function __construct($file, $converteroptions = null)
@@ -30,16 +27,15 @@ class ConvertStorage extends Convert implements ConvertInterface {
 		return $this->getFile()->options();
 	}
 
-	public function getConversionSettings($output)
+	public function getConversionSettings()
 	{
-		$output->filenameCheck($this);
 		return [
 			'input' => $this->getFile()->options(),
-			'outputformat' =>  $output->getFormat(),
+			'outputformat' =>  $this->output->getFormat(),
 			'file' => $this->getFile()->getPath(),
-			'converteroptions' =>  $output->getConverterOptions(),
-			'preset' =>$output->getPreset(),
-			'output' => $output->getStorage()
+			'converteroptions' =>  $this->output->getConverterOptions(),
+			'preset' =>$this->output->getPreset(),
+			'output' => $this->output->getStorage()
 		];
 	}
 }

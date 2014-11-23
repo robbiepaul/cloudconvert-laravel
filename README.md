@@ -16,9 +16,19 @@ Install this package through [Composer](https://getcomposer.org/).
 
 Add this to your `composer.json` dependencies:
 
+### Using Laravel ~4.2
+
 ```js
 "require": {
    "robbiep/cloudconvert-laravel": "1.*@dev"
+}
+```
+
+### Using Laravel 5.0+
+
+```js
+"require": {
+   "robbiep/cloudconvert-laravel": "~2.*"
 }
 ```
 
@@ -35,6 +45,7 @@ Next you need to add the service provider to `config/app.php`
 One more step. 
 
 You need to publish the config `php artisan config:publish robbiep/cloudconvert-laravel`
+> Laravel 5 requires slightly different syntax for publishing configs, use `php artisan publish:config robbiep/cloudconvert-laravel`
 
 Just enter your API key in `config/packages/robbiep/cloudconvert-laravel/config.php` 
 > You can get your free API key by registering at [https://cloudconvert.org](https://cloudconvert.org)
@@ -48,28 +59,37 @@ There's many ways to use CloudConvert. I'll cover a few of them here, for all th
 ### File conversion
 ```php
 # Convert the file to /a/path/to/file.mp4
+
 CloudConvert::file('/a/path/to/file.mov')->to('mp4');
+```
 
-
+```php
 # Convert the file and save it in a different location /a/new/path/to/new.mp4
+
 CloudConvert::file('/a/path/to/biggles.webm')->to('/a/new/path/to/new.mp4');
+```
 
-
+```php
 # It also works with Laravel's file upload
+
 if (Input::hasFile('photo'))
 {
     CloudConvert::file( Input::file('photo') )->to('/a/local/path/profile_image.jpg');
 }
+```
 
-
+```php
 # Convert the image to kitty.jpg with quality of 70%
+
 CloudConvert::file('kitty.png')->quality(70)->to('jpg');
 
+```
 
+```php
 # Convert a PowerPoint presentation to a set of images, let's say you only want slides 2 to 4
 # This will save presentation-2.jpg, presentation-3.jpg and presentation-4.jpg
-CloudConvert::file('presentation.ppt')->pageRange(2, 4)->to('jpg');
 
+CloudConvert::file('presentation.ppt')->pageRange(2, 4)->to('jpg');
 ```
 
 #### Converter options
@@ -77,6 +97,7 @@ There are many more conversion options. I've put shortcuts like the ones above f
 
 ```php
 # Convert the meow.wav to meow.mp3 with a frequecy of 44100 Hz and normalize the audio to +20dB
+
 CloudConvert::file('meow.wav')->withOptions([
     'audio_frequency' => '44100', 
     'audio_normalize' => '+20dB'
@@ -84,6 +105,7 @@ CloudConvert::file('meow.wav')->withOptions([
 
 
 # Convert the fido_falls_over.mp4 to fido.gif but you only want 10 seconds of it, starting at 1:02
+
 CloudConvert::file('fido_falls_over.mp4')->withOptions([
     'trim_from' => '62', 
     'trim_to' => '72'
@@ -96,12 +118,14 @@ CloudConvert::file('fido_falls_over.mp4')->trimFrom(62)->trimTo(72)->to('fido.gi
 You can also chain multiple conversions on one process, like this:
 ```php
 # Convert a TrueType font in to all the fonts you need for a cross browser web font pack
+
 CloudConvert::file('claw.ttf')->to('eot')->to('otf')->to('woff')->to('svg');
 ```
 #### Remote files
 It will also work with converting remote files (just make sure you provide a path to save it to)
 ```php
 # Convert Google's SVG logo hosted on Wikipedia to a png on your server
+
 CloudConvert::file('http://upload.wikimedia.org/wikipedia/commons/a/aa/Logo_Google_2013_Official.svg')
             ->to('images/google.png');
 ```
@@ -110,10 +134,13 @@ CloudConvert::file('http://upload.wikimedia.org/wikipedia/commons/a/aa/Logo_Goog
 CloudConvert will also take a screenshot of a website and convert it to an image or pdf for you:
 ```php
 # Take a screenshot with the default options: 1024px with with full height of webpage
+
 CloudConvert::website('www.nyan.cat')->to('screenshots/nyan.jpg');
+```
 
-
+```php
 # You can also specify the width and the height as converter options
+
 CloudConvert::website('www.nyan.cat')
             ->withOptions([
                  'screen_width' => 1024,
@@ -129,19 +156,24 @@ At the moment CloudConvert let you use *FTP* or *Amazon S3* as storage options. 
 ```php
 # Lets say you have a PDF and you want to convert it to an ePub file and 
 # store it on your Amazon S3 bucket (defined in your config). It's this simple:
+
 CloudConvert::file('/a/local/path/garfield.pdf')->to(CloudConvert::S3('Garfield_converted.epub'));
+```
 
-
+```php
 # You can also override the default options by providing them as an array as the second argument
+
 CloudConvert::file('/a/local/path/garfield.pdf')
             ->to(CloudConvert::S3('Garfield_converted.epub', [
                 'bucket'  => 'a-different-bucket',
                 'acl'     => 'public-read',
                 'region'  => 'us-east-1'
             ]));
-            
-            
+```
+
+```php
 # Now you want to convert the file on your S3 to a txt file and store it on a server via FTP
+
 CloudConvert::file(CloudConvert::S3('Garfield_converted.epub'))
             ->to(CloudConvert::FTP('path/to/garfield.txt'));
 ```
@@ -166,6 +198,7 @@ To use queues you will need have set-up either beanstalk or iron in your `config
 ```php
 # The queue will check every second if the conversion has finished. 
 # It times out after 120 seconds (configurable).
+
 CloudConvert::file('/a/path/to/file.mov')->queue('to', '/a/path/to/file.mp4')
 ```
 
@@ -173,18 +206,25 @@ CloudConvert::file('/a/path/to/file.mov')->queue('to', '/a/path/to/file.mp4')
 You can view the conversion types using the `conversionTypes()` method. It always returns `Illuminate\Support\Collection`.
 ```php
 # To get all possible types
+
 $types = CloudConvert::conversionTypes();
+```
 
-
+```php
 # To get all possible types in a specific group
+
 $types = CloudConvert::conversionTypes('video');
+```
 
-
+```php
 # To get all possible output formats if you know the input format
+
 $types = CloudConvert::input('pdf')->conversionTypes();
+```
 
-
+```php
 # Same if you know the output format and want to see what can be inputted
+
 $types = CloudConvert::output('jpg')->conversionTypes();
 ```
 

@@ -3,7 +3,7 @@
 namespace RobbieP\CloudConvertLaravel;
 
 use Illuminate\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\File\UploadedFile as Uploaded;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ConvertLocalFile extends Convert implements ConvertInterface {
 
@@ -12,7 +12,7 @@ class ConvertLocalFile extends Convert implements ConvertInterface {
 		parent::__construct($file, $converteroptions);
 		$this->setMethod(CloudConvert::INPUT_UPLOAD);
 		$this->setFilesystem();
-		if($file instanceof Uploaded) {
+		if($file instanceof UploadedFile) {
 			$this->setFile($file->getFilename());
 		}
 	}
@@ -38,19 +38,22 @@ class ConvertLocalFile extends Convert implements ConvertInterface {
 		return $this->fileSystem->isWritable($this->getPath()) && $this->getData();
 	}
 
-	public function getConversionSettings($output)
+	public function getConversionSettings()
 	{
-		$output->filenameCheck($this);
 		return [
 			'input' => CloudConvert::INPUT_UPLOAD,
-			'outputformat' => $output->getFormat(),
+			'outputformat' => $this->output->getFormat(),
 			'file' => @fopen($this->getFilepath(), 'r'),
-			'converteroptions' => $output->getConverterOptions(),
-			'preset' => $output->getPreset(),
-			'output' => $output->getStorage()
+			'converteroptions' => $this->output->getConverterOptions(),
+			'preset' => $this->output->getPreset(),
+			'output' => $this->output->getStorage()
 		];
 	}
 
+	/**
+	 * @param string $file_path
+	 * @return bool
+	 */
 	private function saveFile($file_path, $data)
 	{
 		if(is_array($data)) {

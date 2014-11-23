@@ -15,6 +15,9 @@ class StorageFTP extends Storage implements  StorageInterface {
 	public $path;
 	private $config;
 
+	/**
+	 * @param Config $config
+	 */
 	function __construct($config) {
 		$this->config = $config;
 		if(is_object($config)) {

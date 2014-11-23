@@ -2,9 +2,7 @@
 
 namespace RobbieP\CloudConvertLaravel;
 
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ConvertWebsite extends Convert implements ConvertInterface {
 
@@ -35,23 +33,22 @@ class ConvertWebsite extends Convert implements ConvertInterface {
 		return 'Screenshot_'.Str::slug(str_replace('http','',$this->file)) . '_'.date('dmYHs').'.website';
 	}
 
-	public function getConversionSettings($output)
+	public function getConversionSettings()
 	{
-		$output->filenameCheck($this);
 		return [
 			'input' => CloudConvert::INPUT_URL,
-			'outputformat' => $output->getFormat(),
+			'outputformat' => $this->output->getFormat(),
 			'filename' => $this->getFilename(),
 			'file' => $this->getFile(),
-			'converteroptions' =>  $output->getConverterOptions(),
-			'preset' =>$output->getPreset(),
-			'output' =>$output->getStorage()
+			'converteroptions' =>  $this->output->getConverterOptions(),
+			'preset' =>$this->output->getPreset(),
+			'output' =>$this->output->getStorage()
 		];
 
 	}
 
 	/**
-	 * @param $url
+	 * @param string $url
 	 * @throws \Exception
 	 */
 	public function validateURL($url)

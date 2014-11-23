@@ -3,7 +3,6 @@
 namespace RobbieP\CloudConvertLaravel;
 
 
-use Illuminate\Support\Str;
 use OAuth\Common\Exception\Exception;
 use Symfony\Component\Process\Exception\InvalidArgumentException;
 
@@ -72,9 +71,18 @@ class Process {
     public function convert(Convert $input, Convert $output)
     {
         $this->validateInputAndOutput($input, $output);
-        $response = $this->process($input->getConversionSettings($output));
+        $input->prepareOutput($output);
+        $response = $this->process($input->toArray());
 
         return $response;
+    }
+
+    /**
+     * @return string
+     */
+    public function downloadURL()
+    {
+        return !empty($this->output) ? $this->output->url :  '';
     }
 
     /**
@@ -235,8 +243,8 @@ class Process {
     }
 
     /**
-     * @param $input
-     * @param $output
+     * @param Convert $input
+     * @param Convert $output
      */
     private function validateInputAndOutput($input, $output)
     {

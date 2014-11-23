@@ -15,6 +15,9 @@ class StorageS3 extends Storage implements StorageInterface {
 	public $region;
 	private $config;
 
+	/**
+	 * @param Config $config
+	 */
 	function __construct($config) {
 		$this->config = $config;
 		if(is_object($config)) {
