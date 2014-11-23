@@ -2,9 +2,7 @@
 
 namespace RobbieP\CloudConvertLaravel;
 
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ConvertWebsite extends Convert implements ConvertInterface {
 
@@ -51,7 +49,7 @@ class ConvertWebsite extends Convert implements ConvertInterface {
 	}
 
 	/**
-	 * @param $url
+	 * @param string $url
 	 * @throws \Exception
 	 */
 	public function validateURL($url)

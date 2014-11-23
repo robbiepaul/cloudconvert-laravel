@@ -2,8 +2,6 @@
 
 namespace RobbieP\CloudConvertLaravel;
 
-use GuzzleHttp\Client;
-
 trait HttpClient
 {
 

@@ -8,7 +8,7 @@ interface StorageInterface {
 
 	/**
 	 * @param $options
-	 * @return mixed
+	 * @return void
      */
 	public function setOptions ( $options );
 
@@ -28,7 +28,7 @@ interface StorageInterface {
 	public function getPath ();
 
 	/**
-	 * @return mixed
+	 * @return string
      */
 	public function getMethod ();
 

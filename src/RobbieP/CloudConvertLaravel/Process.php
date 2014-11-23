@@ -3,7 +3,6 @@
 namespace RobbieP\CloudConvertLaravel;
 
 
-use Illuminate\Support\Str;
 use OAuth\Common\Exception\Exception;
 use Symfony\Component\Process\Exception\InvalidArgumentException;
 
@@ -235,8 +234,8 @@ class Process {
     }
 
     /**
-     * @param $input
-     * @param $output
+     * @param Convert $input
+     * @param Convert $output
      */
     private function validateInputAndOutput($input, $output)
     {

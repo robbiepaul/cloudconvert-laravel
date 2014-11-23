@@ -4,6 +4,9 @@ namespace RobbieP\CloudConvertLaravel;
 
 interface ConvertInterface {
 
+	/**
+	 * @return string
+	 */
 	public function getPath ();
 
 	public function getFilename ();
