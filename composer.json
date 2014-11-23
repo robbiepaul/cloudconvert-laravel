@@ -12,7 +12,7 @@
     "require": {
         "php": ">=5.4.0",
         "illuminate/support": "4.2.*",
-        "illuminate/filesystem": "5.0.*@dev",
+        "illuminate/filesystem": "4.2.*",
         "guzzlehttp/guzzle": "~5.0",
         "patchwork/utf8": "1.1.*"
     },
