@@ -77,6 +77,14 @@ class Process {
     }
 
     /**
+     * @return string
+     */
+    public function downloadURL()
+    {
+        return !empty($this->output) ? $this->output->url :  '';
+    }
+
+    /**
      * @return array
      * @throws \Exception
      */

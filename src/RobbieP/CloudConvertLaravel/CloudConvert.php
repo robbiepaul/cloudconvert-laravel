@@ -440,7 +440,7 @@ class CloudConvert
      */
     public function downloadURL()
     {
-        if (isset($this->process->output->url)) return $this->process->output->url;
+        if ( $this->getProcess()->isFinished() ) return $this->getProcess()->downloadURL();
         throw new Exception('Download URL not ready yet.');
     }
 
