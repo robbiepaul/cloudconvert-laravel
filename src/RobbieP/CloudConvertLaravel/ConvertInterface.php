@@ -17,5 +17,8 @@ interface ConvertInterface {
 
 	public function save ();
 
-	public function getConversionSettings ($output);
+	public function toArray ();
+
+	public function getConversionSettings ();
+
 }

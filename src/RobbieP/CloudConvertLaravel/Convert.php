@@ -16,6 +16,7 @@ abstract class Convert {
 	protected $converteroptions;
 	protected $preset;
 	protected $seperator;
+	protected $output;
 
 	/**
 	 * @param $file
@@ -217,6 +218,9 @@ abstract class Convert {
 		$this->preset = $preset;
 	}
 
+	/**
+	 * @param Convert $input
+     */
 	public function filenameCheck(Convert $input)
 	{
 		if (empty($this->filename) && empty($this->path)) {
@@ -225,16 +229,28 @@ abstract class Convert {
 		}
 	}
 
+	/**
+	 * @param $file
+	 * @return bool
+     */
 	protected function isPath($file)
 	{
 		return $this->parseExtension($file) === '' && strstr($file, '/');
 	}
 
-	protected function parseExtension($filepath)
+	/**
+	 * @param string $file_path
+	 * @return string
+     */
+	protected function parseExtension($file_path = '')
 	{
-		return strtolower(pathinfo($filepath, PATHINFO_EXTENSION));
+		return strtolower(pathinfo($file_path, PATHINFO_EXTENSION));
 	}
 
+	/**
+	 * @param $format
+	 * @throws \Exception
+     */
 	protected function validateFormat($format)
 	{
 		if( empty($format) || ! $this->isFormat($format) ) {
@@ -242,10 +258,30 @@ abstract class Convert {
 		}
 	}
 
+	/**
+	 * @param $format
+	 * @return bool
+     */
 	protected  function isFormat($format)
 	{
 		return ctype_alnum($format);
 	}
 
+	/**
+	 * @param Convert $output
+     */
+	public function prepareOutput(Convert $output)
+	{
+		$output->filenameCheck($this);
+		$this->output = $output;
+	}
+
+	/**
+	 * @return mixed
+     */
+	public function toArray()
+	{
+		return $this->getConverterOptions();
+	}
 
 }

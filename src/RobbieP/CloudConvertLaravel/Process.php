@@ -71,6 +71,7 @@ class Process {
     public function convert(Convert $input, Convert $output)
     {
         $this->validateInputAndOutput($input, $output);
+        $input->prepareOutput($output);
         $response = $this->process($input->getConversionSettings($output));
 
         return $response;

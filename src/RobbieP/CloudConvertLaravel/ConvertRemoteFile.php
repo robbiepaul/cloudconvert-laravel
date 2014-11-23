@@ -31,17 +31,16 @@ class ConvertRemoteFile extends Convert implements ConvertInterface {
 		return $this->fileSystem->isWritable($this->getFilepath()) && $this->getData();
 	}
 
-	public function getConversionSettings($output)
+	public function getConversionSettings()
 	{
-		$output->filenameCheck($this);
 		return [
 			'input' => CloudConvert::INPUT_DOWNLOAD,
-			'outputformat' => $output->getFormat(),
+			'outputformat' => $this->output->getFormat(),
 			'filename' => $this->getFilename(),
 			'link' => $this->getFile(),
-			'converteroptions' =>  $output->getConverterOptions(),
-			'preset' =>$output->getPreset(),
-			'output' =>$output->getStorage()
+			'converteroptions' =>  $this->output->getConverterOptions(),
+			'preset' =>$this->output->getPreset(),
+			'output' =>$this->output->getStorage()
 		];
 	}
 }

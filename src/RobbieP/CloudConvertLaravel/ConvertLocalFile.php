@@ -38,21 +38,21 @@ class ConvertLocalFile extends Convert implements ConvertInterface {
 		return $this->fileSystem->isWritable($this->getPath()) && $this->getData();
 	}
 
-	public function getConversionSettings($output)
+	public function getConversionSettings()
 	{
-		$output->filenameCheck($this);
 		return [
 			'input' => CloudConvert::INPUT_UPLOAD,
-			'outputformat' => $output->getFormat(),
+			'outputformat' => $this->output->getFormat(),
 			'file' => @fopen($this->getFilepath(), 'r'),
-			'converteroptions' => $output->getConverterOptions(),
-			'preset' => $output->getPreset(),
-			'output' => $output->getStorage()
+			'converteroptions' => $this->output->getConverterOptions(),
+			'preset' => $this->output->getPreset(),
+			'output' => $this->output->getStorage()
 		];
 	}
 
 	/**
 	 * @param string $file_path
+	 * @return bool
 	 */
 	private function saveFile($file_path, $data)
 	{
