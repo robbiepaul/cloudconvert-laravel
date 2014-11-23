@@ -72,7 +72,7 @@ class Process {
     {
         $this->validateInputAndOutput($input, $output);
         $input->prepareOutput($output);
-        $response = $this->process($input->getConversionSettings($output));
+        $response = $this->process($input->toArray());
 
         return $response;
     }
