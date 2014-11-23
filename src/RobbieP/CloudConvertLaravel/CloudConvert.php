@@ -123,7 +123,7 @@ class CloudConvert
      */
     public function convert($type = null)
     {
-        $this->validateConversion($type);
+        $this->validateConversion();
         $this->initOutput($type);
         $this->startProcess();
 
