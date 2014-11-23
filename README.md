@@ -16,7 +16,7 @@ Install this package through [Composer](https://getcomposer.org/).
 
 Add this to your `composer.json` dependencies:
 
-### Using Laravel 4.2+
+### Using Laravel ~4.2
 
 ```js
 "require": {
