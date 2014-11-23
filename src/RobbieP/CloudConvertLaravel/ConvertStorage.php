@@ -2,9 +2,6 @@
 
 namespace RobbieP\CloudConvertLaravel;
 
-use Illuminate\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-
 class ConvertStorage extends Convert implements ConvertInterface {
 
 	function __construct($file, $converteroptions = null)

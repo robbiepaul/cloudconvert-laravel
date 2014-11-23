@@ -12,7 +12,7 @@ namespace RobbieP\CloudConvertLaravel;
 interface HttpClientInterface {
     /**
      * GET REQUEST
-     * @param $url
+     * @param string $url
      * @param array $params
      * @return mixed
      */
@@ -20,7 +20,7 @@ interface HttpClientInterface {
 
     /**
      * POST REQUEST
-     * @param $url
+     * @param string $url
      * @param array $params
      * @return mixed
      */
@@ -28,7 +28,7 @@ interface HttpClientInterface {
 
     /**
      * DELETE REQUEST
-     * @param $url
+     * @param string $url
      * @return mixed
      */
     public function delete ( $url );
@@ -36,9 +36,9 @@ interface HttpClientInterface {
     /**
      * HTTP REQUEST
      * @param $url
-     * @param $method get, post, delete, put
+     * @param string $method get, post, delete, put
      * @param array $params
-     * @return mixed
+     * @return HttpClientAdapter
      */
     public function request ( $url, $method, $params = [] );
 

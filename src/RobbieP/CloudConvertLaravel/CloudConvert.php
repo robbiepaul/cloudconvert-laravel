@@ -14,12 +14,8 @@
 namespace RobbieP\CloudConvertLaravel;
 
 use Exception;
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Message\Response;
-use GuzzleHttp\Stream\Stream;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 
 
 class CloudConvert
@@ -89,6 +85,9 @@ class CloudConvert
         return $this;
     }
 
+    /**
+     * @param Filesystem $fileSystem
+     */
     public function setFilesystem($fileSystem = null)
     {
         $this->fileSystem = (!is_null($fileSystem)) ? $fileSystem : new Filesystem();
@@ -245,7 +244,7 @@ class CloudConvert
      * @throws Exception
      * @internal param $input
      * @internal param $output
-     * @return Process
+     * @return CloudConvert
      */
     public function startProcess()
     {
@@ -263,7 +262,7 @@ class CloudConvert
     }
 
     /**
-     * @param $process
+     * @param Process $process
      * @return mixed
      */
     public function setProcess($process)
@@ -317,7 +316,7 @@ class CloudConvert
     }
 
     /**
-     * @return mixed
+     * @return ConvertRemoteFile
      */
     public function initFromUrl()
     {
@@ -334,7 +333,7 @@ class CloudConvert
     }
 
     /**
-     * @return mixed
+     * @return ConvertLocalFile
      */
     public function initFromLocalFile()
     {
@@ -342,7 +341,7 @@ class CloudConvert
     }
 
     /**
-     * @return mixed
+     * @return ConvertStorage
      */
     private function initFromRemoteStorage()
     {
@@ -470,7 +469,7 @@ class CloudConvert
     }
 
 	/**
-	 * @param $types
+	 * @param Collection $types
 	 * @param $group
 	 * @return mixed
      */
@@ -520,7 +519,7 @@ class CloudConvert
     }
 
     /**
-     * @param $name
+     * @param string $name
      * @param $value
      */
     private function setOption($name, $value)
@@ -612,7 +611,7 @@ class CloudConvert
     }
 
     /**
-     * @param $provider
+     * @param string $provider
      * @param $options
      * @return Storage
      */
@@ -631,7 +630,7 @@ class CloudConvert
     }
 
     /**
-     * @param $action
+     * @param string $action
      * @param $options
      * @return bool
      */
