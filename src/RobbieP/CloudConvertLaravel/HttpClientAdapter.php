@@ -21,12 +21,13 @@ class HttpClientAdapter implements HttpClientInterface {
     /**
      * @param $url
      * @param array $params
-     * @param array $query
+     * @param array|null $query
      * @return bool|mixed
      */
-    public function post($url, $params = [], $query = [])
+    public function post($url, $params = [], $query = null)
     {
-        $opts = [ 'body' => $params + $query ];
+        $body = is_array($query) && is_array($params)  ? array_merge($params, $query) : $params;
+        $opts = [ 'body' => $body ];
         $this->response = $this->client->post($url,  $opts);
         return $this->response->json(['object' => true]);
     }

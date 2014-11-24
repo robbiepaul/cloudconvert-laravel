@@ -83,6 +83,7 @@ abstract class Convert {
 		return !empty( $this->preset ) ? $this->preset : null;
 	}
 
+
 	/**
 	 * @param mixed $properties
 	 */
@@ -281,7 +282,7 @@ abstract class Convert {
      */
 	public function toArray()
 	{
-		return $this->getConverterOptions();
+		return $this->getConversionSettings();
 	}
 
 }

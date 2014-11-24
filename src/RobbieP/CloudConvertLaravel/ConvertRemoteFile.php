@@ -37,10 +37,19 @@ class ConvertRemoteFile extends Convert implements ConvertInterface {
 			'input' => CloudConvert::INPUT_DOWNLOAD,
 			'outputformat' => $this->output->getFormat(),
 			'filename' => $this->getFilename(),
-			'link' => $this->getFile(),
+			'file' => $this->getFile(),
 			'converteroptions' =>  $this->output->getConverterOptions(),
 			'preset' =>$this->output->getPreset(),
 			'output' =>$this->output->getStorage()
 		];
 	}
+
+
+
+
+
+
 }
+
+
+
