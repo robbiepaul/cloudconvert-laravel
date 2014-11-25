@@ -58,10 +58,8 @@ class Process {
     {
         $this->checkURLisOK();
         $response = $this->http->{$method}($this->url . $endpoint, $params, $this->getQueryOptions());
-
         return $response;
     }
-
 
     /**
      * @param Convert $input
@@ -72,6 +70,7 @@ class Process {
     {
         $this->validateInputAndOutput($input, $output);
         $input->prepareOutput($output);
+
         $response = $this->process($input->toArray());
 
         return $response;
