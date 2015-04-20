@@ -20,7 +20,7 @@ Add this to your `composer.json` dependencies:
 
 ```js
 "require": {
-   "robbiep/cloudconvert-laravel": "2.1"
+   "robbiep/cloudconvert-laravel": "2.*"
 }
 ```
 
