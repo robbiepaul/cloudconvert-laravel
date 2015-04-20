@@ -16,19 +16,19 @@ Install this package through [Composer](https://getcomposer.org/).
 
 Add this to your `composer.json` dependencies:
 
+### Using Laravel 5.0+
+
+```js
+"require": {
+   "robbiep/cloudconvert-laravel": "2.1"
+}
+```
+
 ### Using Laravel ~4.2
 
 ```js
 "require": {
    "robbiep/cloudconvert-laravel": "1.*@dev"
-}
-```
-
-### Using Laravel 5.0+
-
-```js
-"require": {
-   "robbiep/cloudconvert-laravel": "2.0.1-beta"
 }
 ```
 
@@ -44,10 +44,10 @@ Next you need to add the service provider to `config/app.php`
 ```
 One more step. 
 
-You need to publish the config `php artisan config:publish robbiep/cloudconvert-laravel`
-> Laravel 5 requires slightly different syntax for publishing configs, use `php artisan publish:config robbiep/cloudconvert-laravel`
+You need to publish the config `php artisan vendor:publish`
+> Laravel 4 requires slightly different syntax for publishing configs, use `php artisan config:publish robbiep/cloudconvert-laravel`
 
-Just enter your API key in `config/packages/robbiep/cloudconvert-laravel/config.php` 
+Just enter your API key in `config/cloudconvert.php` 
 > You can get your free API key by registering at [https://cloudconvert.org](https://cloudconvert.org)
 
 
