@@ -20,7 +20,9 @@ class CloudConvertLaravelServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		$this->package('robbiep/cloudconvert-laravel');
+        $this->publishes([
+            __DIR__.'/../../config/cloudconvert.php' => config_path('cloudconvert.php'),
+        ]);
 	}
 
 	/**
@@ -34,7 +36,7 @@ class CloudConvertLaravelServiceProvider extends ServiceProvider {
 
 		$this->app['cloudconvert'] = $this->app->share(function($app)
 		{
-			return new CloudConvert($app['config']->get('cloudconvert-laravel::config'));
+			return new CloudConvert(config('cloudconvert'));
 		});
 
 		$this->app->booting(function()
