@@ -236,7 +236,7 @@ abstract class Convert {
      */
 	protected function isPath($file)
 	{
-		return $this->parseExtension($file) === '' && strstr($file, '/');
+		return $this->parseExtension($file) === '' && strstr($file, '/') && is_file($file) === false;
 	}
 
 	/**

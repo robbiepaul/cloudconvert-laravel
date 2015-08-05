@@ -19,6 +19,7 @@ class ConvertTest extends BaseTest {
 				'getClientOriginalName'      => 'image-1.jpg',
 				'getFilename'                => '/tmp/image-1.jpg',
 				'getClientOriginalExtension' => 'jpg',
+				'getPathname'                => '/tmp/image-1.jpg'
 			]
 		);
 		$convertLocalFile = new \RobbieP\CloudConvertLaravel\ConvertLocalFile($uploaded_file);
