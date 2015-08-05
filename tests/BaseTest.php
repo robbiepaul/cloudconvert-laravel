@@ -30,6 +30,7 @@ abstract class BaseTest extends PHPUnit_Framework_TestCase {
 				'getClientOriginalName'      => 'image-1.jpg',
 				'getFilename'                => '/tmp/image-1.jpg',
 				'getClientOriginalExtension' => 'jpg',
+				'getPathname'                => '/tmp/image-1.jpg'
 			]
 		);
 		$this->cloudConvert->file($uploaded_file);
