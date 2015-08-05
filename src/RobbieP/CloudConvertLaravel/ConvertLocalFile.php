@@ -7,13 +7,17 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ConvertLocalFile extends Convert implements ConvertInterface {
 
+	private $uploadedFile;
+
 	function __construct($file, $converteroptions = null)
 	{
 		parent::__construct($file, $converteroptions);
 		$this->setMethod(CloudConvert::INPUT_UPLOAD);
 		$this->setFilesystem();
 		if($file instanceof UploadedFile) {
-			$this->setFile($file->getFilename());
+			$this->uploadedFile = $file;
+			$this->setFile($file->getPathname());
+			$this->setFormat($file->getClientOriginalExtension());
 		}
 	}
 
@@ -32,7 +36,7 @@ class ConvertLocalFile extends Convert implements ConvertInterface {
 
 	/**
 	 * @return bool
-     */
+	 */
 	protected function validateSave()
 	{
 		return $this->fileSystem->isWritable($this->getPath()) && $this->getData();
@@ -40,7 +44,8 @@ class ConvertLocalFile extends Convert implements ConvertInterface {
 
 	public function getConversionSettings()
 	{
-		return [
+
+		$settings = [
 			'input' => CloudConvert::INPUT_UPLOAD,
 			'outputformat' => $this->output->getFormat(),
 			'file' => @fopen($this->getFilepath(), 'r'),
@@ -48,6 +53,13 @@ class ConvertLocalFile extends Convert implements ConvertInterface {
 			'preset' => $this->output->getPreset(),
 			'output' => $this->output->getStorage()
 		];
+
+		if ($this->uploadedFile !== null) {
+			$settings['filename'] = $this->uploadedFile->getClientOriginalName();
+
+		}
+
+		return $settings;
 	}
 
 	/**
