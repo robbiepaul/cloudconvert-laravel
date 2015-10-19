@@ -110,6 +110,12 @@ class CloudConvert
      */
     public function to($type)
     {
+        if(is_array($type)) {
+            foreach($type as $ext) {
+                $this->to($ext);
+            }
+            return $this;
+        }
         $this->convert($type);
         $this->save();
         return $this;
