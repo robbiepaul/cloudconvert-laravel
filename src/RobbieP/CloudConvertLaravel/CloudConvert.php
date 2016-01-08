@@ -1,3 +1,4 @@
+
 <?php
 
 /*
@@ -110,8 +111,15 @@ class CloudConvert
      */
     public function to($type)
     {
+        if(is_array($type)) {
+            foreach($type as $ext) {
+                $this->to($ext);
+            }
+            return $this;
+        }
         $this->convert($type);
         $this->save();
+        $this->reset();
         return $this;
     }
 
@@ -422,6 +430,7 @@ class CloudConvert
         if($this->hasOutput()) {
             $this->getOutput()->setData($data);
             $this->getOutput()->save();
+            //clear
         }
         return $this;
     }
@@ -989,6 +998,19 @@ class CloudConvert
             $this->setOutput(new ConvertStorage($type));
         } else {
             $this->setOutput(new ConvertLocalFile($type));
+        }
+    }
+
+    public function reset()
+    {
+        if( $this->getProcess() && $this->getProcess()->isFinished() ) {
+            $this->resource = null;
+            $this->input = null;
+            $this->output = null;
+            $this->process = null;
+            $this->input_method = null;
+            $this->input_format = null;
+            $this->output_format = null;
         }
     }
 

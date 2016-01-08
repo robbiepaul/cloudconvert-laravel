@@ -1,6 +1,3 @@
-
-
-
 # CloudConvert Laravel API
 
 
@@ -39,7 +36,7 @@ Next you need to add the service provider to `config/app.php`
 ```php
 'providers' => array(
     ...
-    'RobbieP\CloudConvertLaravel\CloudConvertLaravelServiceProvider'
+    RobbieP\CloudConvertLaravel\CloudConvertLaravelServiceProvider::class
 )
 ```
 One more step. 
@@ -120,6 +117,9 @@ You can also chain multiple conversions on one process, like this:
 # Convert a TrueType font in to all the fonts you need for a cross browser web font pack
 
 CloudConvert::file('claw.ttf')->to('eot')->to('otf')->to('woff')->to('svg');
+
+# Or the same thing with an array
+CloudConvert::file('claw.ttf')->to(['eot', 'otf', 'woff', 'svg']);
 ```
 #### Remote files
 It will also work with converting remote files (just make sure you provide a path to save it to)
