@@ -925,6 +925,18 @@ class CloudConvert
     }
 
     /**
+     * Dynamic PDF creation using DOCX/PPTX templates
+     * See: https://cloudconvert.com/blog/dynamic-pdf-creation-using-docx-templates/
+     * @param $variables
+     * @return $this
+     */
+    public function templating($variables)
+    {
+        $this->setConverterOption('templating', $variables);
+        return $this;
+    }
+
+    /**
      * Prepare the running process for the upload/download
      * Sets any outstanding options or preset
      */
