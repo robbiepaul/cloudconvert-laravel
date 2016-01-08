@@ -126,7 +126,7 @@ You can also chain multiple conversions on one process, like this:
 ```php
 # Convert a TrueType font in to all the fonts you need for a cross browser web font pack
 
-CloudConvert::file('claw.ttf')->to('eot')->to('otf')->to('woff')->to('svg');
+CloudConvert::file('claw.ttf')->to('eot', true)->to('otf', true)->to('woff', true)->to('svg');
 
 # Or the same thing with an array
 CloudConvert::file('claw.ttf')->to(['eot', 'otf', 'woff', 'svg']);
