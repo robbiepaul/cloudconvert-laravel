@@ -89,6 +89,15 @@ CloudConvert::file('kitty.png')->quality(70)->to('jpg');
 CloudConvert::file('presentation.ppt')->pageRange(2, 4)->to('jpg');
 ```
 
+#### Dynamic file conversion
+```php
+# Dynamic PDF creation using DOCX/PPTX templates
+# See this blog post for more details: https://cloudconvert.com/blog/dynamic-pdf-creation-using-docx-templates/
+
+$variables = ['name' => 'John Doe', 'address' => 'Wall Street'];
+CloudConvert::file('invoice_template.docx')->templating($variables)->to('invoice.pdf');
+```
+
 #### Converter options
 There are many more conversion options. I've put shortcuts like the ones above for the most common. However you can pass through any options you like using the `withOptions` method, such as:
 
@@ -110,6 +119,7 @@ CloudConvert::file('fido_falls_over.mp4')->withOptions([
 
 # Or the same with using the shortcuts:
 CloudConvert::file('fido_falls_over.mp4')->trimFrom(62)->trimTo(72)->to('fido.gif');
+
 ```
 #### Chaining multiple conversions
 You can also chain multiple conversions on one process, like this:
