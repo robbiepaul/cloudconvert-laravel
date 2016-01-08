@@ -1,5 +1,4 @@
-
-<?php
+<?php namespace RobbieP\CloudConvertLaravel;
 
 /*
 	|--------------------------------------------------------------------------
@@ -11,8 +10,6 @@
 	| spreadsheet and presentation formats supported.
 	|
 	*/
-
-namespace RobbieP\CloudConvertLaravel;
 
 use Exception;
 use Illuminate\Filesystem\Filesystem;
@@ -109,17 +106,18 @@ class CloudConvert
      * @param $type
      * @return $this|CloudConvert
      */
-    public function to($type)
+    public function to($type, $chain = false)
     {
         if(is_array($type)) {
             foreach($type as $ext) {
-                $this->to($ext);
+                $this->to($ext, true);
             }
+            $this->reset();
             return $this;
         }
         $this->convert($type);
         $this->save();
-        $this->reset();
+        if(!$chain) $this->reset();
         return $this;
     }
 
@@ -430,7 +428,6 @@ class CloudConvert
         if($this->hasOutput()) {
             $this->getOutput()->setData($data);
             $this->getOutput()->save();
-            //clear
         }
         return $this;
     }
@@ -1008,6 +1005,7 @@ class CloudConvert
             $this->input = null;
             $this->output = null;
             $this->process = null;
+            $this->preset = null;
             $this->input_method = null;
             $this->input_format = null;
             $this->output_format = null;
