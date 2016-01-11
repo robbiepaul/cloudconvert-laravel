@@ -69,6 +69,16 @@ class CloudConvert
     }
 
     /**
+     * @param array $config
+     * @return CloudConvert
+     */
+    public function newInstance($config = [])
+    {
+        $new_config = array_merge($this->config->toArray(), $config);
+        return new static($new_config);
+    }
+
+    /**
      * @param $resource
      * @param null $input
      * @param null $output

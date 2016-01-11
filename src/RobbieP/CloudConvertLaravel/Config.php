@@ -25,4 +25,10 @@ class Config {
         return array_get($this->config, $key, null);
     }
 
+    public function toArray()
+    {
+        if(! is_array($this->config) ) return [];
+        return $this->config;
+    }
+
 } 
