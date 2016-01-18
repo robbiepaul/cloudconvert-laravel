@@ -1,7 +1,7 @@
 {
     "name": "robbiep/cloudconvert-laravel",
     "description": "A Laravel wrapper for the CloudConvert API",
-    "keywords": ["cloudconvert", "laravel", "laravel4", "screenshot", "conversion", "office", "documents"],
+    "keywords": ["cloudconvert", "laravel", "laravel4", "laravel5", "screenshot", "conversion", "office", "documents"],
     "license": "MIT",
     "authors": [
         {
@@ -13,9 +13,8 @@
         "php": ">=5.4.0",
         "illuminate/support": "^5.0",
         "illuminate/filesystem": "^5.0",
-        "guzzlehttp/guzzle": "~5.0",
-        "patchwork/utf8": "1.1.*",
-        "symfony/var-dumper": "^3.1@dev"
+        "guzzlehttp/guzzle": "~5.0|~6.0",
+        "patchwork/utf8": "1.1.*"
     },
     "require-dev": {
         "phpunit/phpunit": "4.3.5",
