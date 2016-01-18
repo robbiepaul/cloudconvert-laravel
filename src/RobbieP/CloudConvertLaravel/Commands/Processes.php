@@ -1,5 +1,4 @@
-<?php
-namespace RobbieP\CloudConvertLaravel\Commands;
+<?php namespace RobbieP\CloudConvertLaravel\Commands;
 
 use Illuminate\Console\Command;
 use RobbieP\CloudConvertLaravel\CloudConvert;
@@ -9,7 +8,6 @@ use Symfony\Component\Console\Input\InputArgument;
 class Processes extends Command {
 
 	use CloudConvertCommandTrait;
-
 
 	/**
 	 * The console command name.

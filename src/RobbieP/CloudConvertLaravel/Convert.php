@@ -1,5 +1,4 @@
-<?php
-namespace RobbieP\CloudConvertLaravel;
+<?php namespace RobbieP\CloudConvertLaravel;
 
 
 abstract class Convert {
@@ -56,12 +55,17 @@ abstract class Convert {
 			$this->setPath($file);
 			return $this;
 		}
+
 		if($this->isFormat($file)) {
 			$this->setFormat($file);
 			return $this;
 		}
 		$this->file = $file;
-		$this->setPath(dirname($file));
+		if(!$this->isURL($file)) {
+			$this->setPath(dirname($file));
+		} else {
+			$this->setPath('./');
+		}
 		$this->setFilename(basename($file));
 
 		return $this;
@@ -138,6 +142,7 @@ abstract class Convert {
 	public function setFormat($format)
 	{
 		$this->validateFormat($format);
+		$format = $this->stripQueryString($format);
 		$this->format = $format;
 	}
 
@@ -171,6 +176,7 @@ abstract class Convert {
 	 */
 	public function setFilename($filename, $ext = '')
 	{
+		$filename = $this->stripQueryString($filename);
 		$this->filename = empty($ext) ? $filename : preg_replace("/{$this->parseExtension($filename)}$/", $ext, $filename);
 	}
 
@@ -245,7 +251,9 @@ abstract class Convert {
      */
 	protected function parseExtension($file_path = '')
 	{
-		return strtolower(pathinfo($file_path, PATHINFO_EXTENSION));
+		$ext = strtolower(pathinfo($file_path, PATHINFO_EXTENSION));
+		$ext = preg_replace("/(\?.*)/i", '', $ext);
+		return $ext;
 	}
 
 	/**
@@ -265,6 +273,7 @@ abstract class Convert {
      */
 	protected  function isFormat($format)
 	{
+		$format = $this->stripQueryString($format);
 		return ctype_alnum($format);
 	}
 
@@ -283,6 +292,21 @@ abstract class Convert {
 	public function toArray()
 	{
 		return $this->getConversionSettings();
+	}
+
+	/**
+	 * @param $format
+	 * @return mixed
+	 */
+	protected function stripQueryString($format)
+	{
+		$format = preg_replace("/(\?.*)/i", '', $format);
+		return $format;
+	}
+
+	private function isURL($url)
+	{
+		return filter_var($url, FILTER_VALIDATE_URL);
 	}
 
 }

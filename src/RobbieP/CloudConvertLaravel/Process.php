@@ -1,7 +1,4 @@
-<?php
-
-namespace RobbieP\CloudConvertLaravel;
-
+<?php namespace RobbieP\CloudConvertLaravel;
 
 use OAuth\Common\Exception\Exception;
 use Symfony\Component\Process\Exception\InvalidArgumentException;
@@ -84,21 +81,18 @@ class Process {
             $primaryInput->prepareOutput($output);
             $options = $primaryInput->toArray();
             if(isset($options['file'])) {
-                $obj = new ConvertMultiple;
-                $obj->file = $options['file'];
-                $obj->filename = isset($options['filename']) ? $options['filename'] : 1;
+                $obj = $this->createMultipleFileObject($primaryInput, 0);
                 $options['file'] = [$obj->toJson()];
             } 
            
             foreach ($input as $key => $inputObj) {
                 if($key > 0) {
                     $inputObj->prepareOutput($output);
-                    $obj = new ConvertMultiple;
-                    $obj->file = $inputObj->toArray()['file'];
-                    $obj->filename = isset($inputObj->toArray()['filename']) ? $inputObj->toArray()['filename'] : $k+1;
+                    $obj = $this->createMultipleFileObject($inputObj, $key);
                     $options['file'][] = $obj->toJson();
                 }
             }
+            $options['filename'] = $output->getFilename();
             $options['wait'] = true;
             return $options;
         }
@@ -132,7 +126,6 @@ class Process {
      */
     private function fetchFiles()
     {
-
         if(empty($this->output->files))
         {
             return $this->http->request($this->output->url, 'get')->contents();
@@ -210,12 +203,13 @@ class Process {
     }
 
     /**
-     * @param string $action
      * @return $this
+     * @internal param string $action
      */
-    public function status($action = '')
+    public function status()
     {
-        $response = $this->process([], $action, 'get');
+        $response = $this->http->get($this->url);
+
         $this->fill($response);
         return $this;
     }
@@ -225,7 +219,9 @@ class Process {
      */
     public function cancel()
     {
-        return $this->status('cancel');
+        $response = $this->http->delete($this->url);
+        $this->fill($response);
+        return $this;
     }
 
     /**
@@ -275,14 +271,15 @@ class Process {
     /**
      * @param Convert $input
      * @param Convert $output
+     * @throws InvalidArgumentException
      */
     private function validateInputAndOutput($input, $output)
     {
         if(!$input instanceof Convert && !is_array($input)) {
-            throw new InvalidArgumentException('Input is not convertable');
+            throw new \InvalidArgumentException('Input is not convertable');
         }
         if(!$output instanceof Convert) {
-            throw new InvalidArgumentException('Output is not convertable');
+            throw new \InvalidArgumentException('Output is not convertable');
         }
     }
 
@@ -308,6 +305,19 @@ class Process {
             return true;
         }
         throw new \Exception('Output format provided does not match the format converted');
+    }
+
+    /**
+     * @param $inputObj
+     * @param $key
+     * @return ConvertMultiple
+     */
+    protected function createMultipleFileObject($inputObj, $key)
+    {
+        $obj = new ConvertMultiple;
+        $obj->file = $inputObj->toArray()['file'];
+        $obj->filename = isset($inputObj->toArray()['filename']) ? $inputObj->toArray()['filename'] : $key + 1;
+        return $obj;
     }
 
 

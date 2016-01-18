@@ -1,6 +1,4 @@
-<?php 
-
-namespace RobbieP\CloudConvertLaravel;
+<?php namespace RobbieP\CloudConvertLaravel;
 
 interface ConvertInterface {
 

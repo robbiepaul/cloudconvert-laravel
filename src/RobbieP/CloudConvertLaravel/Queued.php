@@ -1,7 +1,4 @@
-<?php
-
-namespace RobbieP\CloudConvertLaravel;
-
+<?php namespace RobbieP\CloudConvertLaravel;
 
 use Illuminate\Filesystem\Filesystem;
 

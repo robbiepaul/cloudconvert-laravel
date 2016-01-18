@@ -1,15 +1,15 @@
 <?php namespace RobbieP\CloudConvertLaravel;
 
 /*
-	|--------------------------------------------------------------------------
-	| CloudConvert Laravel API
-	|--------------------------------------------------------------------------
-	|
-	| CloudConvert is a file conversion service. Convert anything to anything
-	| more than 100 different audio, video, document, ebook, archive, image,
-	| spreadsheet and presentation formats supported.
-	|
-	*/
+|--------------------------------------------------------------------------
+| CloudConvert Laravel API
+|--------------------------------------------------------------------------
+|
+| CloudConvert is a file conversion service. Convert anything to anything
+| more than 100 different audio, video, document, ebook, archive, image,
+| spreadsheet and presentation formats supported.
+|
+*/
 
 use Exception;
 use Illuminate\Filesystem\Filesystem;
@@ -121,12 +121,7 @@ class CloudConvert
     public function merge(array $array)
     {
         foreach ($array as $file) {
-            $input = $this->init($file);
-            if(! $input instanceof ConvertRemoteFile) {
-                throw new Exception('Merged files must be remote files');
-            }
-            $this->inputs[] = $input;
-            $this->resource = null;
+            $this->addMultipleInput($file);
         }
         return $this;
     }
@@ -1053,6 +1048,20 @@ class CloudConvert
             $this->input_format = null;
             $this->output_format = null;
         }
+    }
+
+    /**
+     * @param $file
+     * @throws Exception
+     */
+    protected function addMultipleInput($file)
+    {
+        $input = $this->init($file);
+        if (!$input instanceof ConvertRemoteFile) {
+            throw new \InvalidArgumentException('Merged files must be remote files at this time');
+        }
+        $this->inputs[] = $input;
+        $this->resource = null;
     }
 
 

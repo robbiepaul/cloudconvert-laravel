@@ -1,6 +1,4 @@
-<?php
-
-namespace RobbieP\CloudConvertLaravel\Facades;
+<?php namespace RobbieP\CloudConvertLaravel\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

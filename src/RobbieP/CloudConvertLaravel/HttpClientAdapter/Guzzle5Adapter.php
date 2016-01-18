@@ -1,17 +1,15 @@
-<?php
-
-namespace RobbieP\CloudConvertLaravel;
+<?php namespace RobbieP\CloudConvertLaravel\HttpClientAdapter;
 
 use GuzzleHttp\Client;
 
-class HttpClientAdapter implements HttpClientInterface {
+class Guzzle5Adapter implements HttpClientInterface {
 
     private $client;
     private $request;
     private $response;
 
     /**
-     *
+     * Uses Guzzle 5.*
      */
     function __construct()
     {
@@ -29,11 +27,12 @@ class HttpClientAdapter implements HttpClientInterface {
         $body = is_array($query) && is_array($params)  ? array_merge($params, $query) : $params;
         
         $opts = [ 'json' =>  $body  ];
-        //if(isset($opts['json']) && isset($opts['json']['file'])) dd($opts);
+
         try {
             $this->response = $this->client->post($url,  $opts);
         } catch (\Exception $e) {
-            dd(['error msg' => $e->getMessage(), 'params' => $body]);
+            dump(['error msg' => $e->getMessage(), 'params' => $body]);
+            die();
         }
         return $this->response->json(['object' => true]);
     }

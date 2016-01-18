@@ -1,6 +1,4 @@
-<?php
-
-namespace RobbieP\CloudConvertLaravel;
+<?php namespace RobbieP\CloudConvertLaravel;
 
 use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -18,6 +16,14 @@ class ConvertLocalFile extends Convert implements ConvertInterface {
 			$this->uploadedFile = $file;
 			$this->setFile($file->getPathname());
 			$this->setFormat($file->getClientOriginalExtension());
+		} else {
+
+//			$this->file = $file;
+//			$this->setPath(dirname($file));
+//			//$this->setFilename(basename($file));
+
+			$this->setFile($file);
+
 		}
 	}
 

@@ -1,6 +1,4 @@
-<?php
-
-namespace RobbieP\CloudConvertLaravel;
+<?php namespace RobbieP\CloudConvertLaravel;
 
 class ConvertStorage extends Convert implements ConvertInterface {
 
