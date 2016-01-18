@@ -1,7 +1,4 @@
-<?php
-
-namespace RobbieP\CloudConvertLaravel;
-
+<?php namespace RobbieP\CloudConvertLaravel;
 
 class StorageS3 extends Storage implements StorageInterface {
 
@@ -57,4 +54,20 @@ class StorageS3 extends Storage implements StorageInterface {
 	}
 
 
+	/**
+	 * @param $options
+	 * @return void
+	 */
+	public function setOptions($options)
+	{
+		// TODO: Implement setOptions() method.
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function options()
+	{
+		// TODO: Implement options() method.
+	}
 }

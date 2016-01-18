@@ -1,5 +1,4 @@
-<?php
-namespace RobbieP\CloudConvertLaravel\Commands;
+<?php namespace RobbieP\CloudConvertLaravel\Commands;
 
 use Illuminate\Console\Command;
 use RobbieP\CloudConvertLaravel\CloudConvert;

@@ -1,13 +1,11 @@
-<?php
-
-namespace RobbieP\CloudConvertLaravel;
+<?php namespace RobbieP\CloudConvertLaravel;
 
 
 abstract class Storage {
 
 	/**
 	 * @return mixed
-     */
+	 */
 	public function __toString()
 	{
 		return $this->getMethod();
@@ -15,7 +13,7 @@ abstract class Storage {
 
 	/**
 	 * @return array
-     */
+	 */
 	public function options()
 	{
 		$this->validateCredentials();
@@ -24,7 +22,7 @@ abstract class Storage {
 
 	/**
 	 * @param $options
-     */
+	 */
 	public function setOptions($options)
 	{
 		if(!empty($options)) {

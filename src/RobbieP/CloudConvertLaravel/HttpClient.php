@@ -1,6 +1,8 @@
-<?php
+<?php namespace RobbieP\CloudConvertLaravel;
 
-namespace RobbieP\CloudConvertLaravel;
+use GuzzleHttp\Client;
+use RobbieP\CloudConvertLaravel\HttpClientAdapter\Guzzle5Adapter;
+use RobbieP\CloudConvertLaravel\HttpClientAdapter\Guzzle6Adapter;
 
 trait HttpClient
 {
@@ -8,11 +10,27 @@ trait HttpClient
     public $http;
 
 	/**
-     * @param HttpClientInterface $adapter
+     * @param HttpClientAdapter\HttpClientInterface $adapter
      */
     public function setClient($adapter = null)
     {
-        $this->http = (!is_null($adapter)) ? $adapter : new HttpClientAdapter;
+        if(! is_null($adapter)) {
+            $this->http = $adapter;
+        } else {
+            $this->setGuzzleAdapter();
+        }
+    }
+
+    public function setGuzzleAdapter()
+    {
+        switch (true) {
+            case ( version_compare(Client::VERSION, '6.0.0', '<') ):
+                $this->http = new Guzzle5Adapter;
+                break;
+            case ( version_compare(Client::VERSION, '6.0.0', '>=') ):
+                $this->http = new Guzzle6Adapter;
+                break;
+        }
     }
 
 }

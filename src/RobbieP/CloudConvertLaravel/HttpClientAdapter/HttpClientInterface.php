@@ -1,13 +1,4 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: robbie
- * Date: 16/11/14
- * Time: 19:53
- */
-
-namespace RobbieP\CloudConvertLaravel;
-
+<?php namespace RobbieP\CloudConvertLaravel\HttpClientAdapter;
 
 interface HttpClientInterface {
     /**
@@ -38,7 +29,7 @@ interface HttpClientInterface {
      * @param $url
      * @param string $method get, post, delete, put
      * @param array $params
-     * @return HttpClientAdapter
+     * @return Guzzle5Adapter|Guzzle6Adapter
      */
     public function request ( $url, $method, $params = [] );
 

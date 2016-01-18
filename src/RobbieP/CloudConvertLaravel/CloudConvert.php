@@ -1,15 +1,15 @@
 <?php namespace RobbieP\CloudConvertLaravel;
 
 /*
-	|--------------------------------------------------------------------------
-	| CloudConvert Laravel API
-	|--------------------------------------------------------------------------
-	|
-	| CloudConvert is a file conversion service. Convert anything to anything
-	| more than 100 different audio, video, document, ebook, archive, image,
-	| spreadsheet and presentation formats supported.
-	|
-	*/
+|--------------------------------------------------------------------------
+| CloudConvert Laravel API
+|--------------------------------------------------------------------------
+|
+| CloudConvert is a file conversion service. Convert anything to anything
+| more than 100 different audio, video, document, ebook, archive, image,
+| spreadsheet and presentation formats supported.
+|
+*/
 
 use Exception;
 use Illuminate\Filesystem\Filesystem;
@@ -30,9 +30,10 @@ class CloudConvert
      * @var null
      */
     private $api_key;
-    private $api_url = 'https://api.cloudconvert.org';
+    private $api_url = 'https://api.cloudconvert.com';
     private $process;
     private $input;
+    private $inputs;
     private $output;
     private $resource;
     private $input_method;
@@ -109,6 +110,19 @@ class CloudConvert
     public function file($file)
     {
         $this->init($file);
+        return $this;
+    }
+
+    /**
+     * @param $array
+     * @return $this
+     * @throws Exception
+     */
+    public function merge(array $array)
+    {
+        foreach ($array as $file) {
+            $this->addMultipleInput($file);
+        }
         return $this;
     }
 
@@ -727,6 +741,7 @@ class CloudConvert
      */
     public function getInput()
     {
+        if(!empty($this->inputs)) return $this->inputs;
         return $this->input;
     }
 
@@ -736,7 +751,8 @@ class CloudConvert
      */
     public function getInputFormat()
     {
-        return isset($this->input) ? $this->getInput()->getFormat() : $this->input_format;
+        $inputObj = (!empty($this->inputs)) ? $this->inputs[0] : $this->input;
+        return isset($this->input) ? $inputObj->getFormat() : $this->input_format;
     }
 
     /**
@@ -1032,6 +1048,20 @@ class CloudConvert
             $this->input_format = null;
             $this->output_format = null;
         }
+    }
+
+    /**
+     * @param $file
+     * @throws Exception
+     */
+    protected function addMultipleInput($file)
+    {
+        $input = $this->init($file);
+        if (!$input instanceof ConvertRemoteFile) {
+            throw new \InvalidArgumentException('Merged files must be remote files at this time');
+        }
+        $this->inputs[] = $input;
+        $this->resource = null;
     }
 
 

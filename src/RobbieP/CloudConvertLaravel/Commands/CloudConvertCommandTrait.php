@@ -1,13 +1,4 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: robbie
- * Date: 18/11/14
- * Time: 20:42
- */
-
-namespace RobbieP\CloudConvertLaravel\Commands;
-
+<?php namespace RobbieP\CloudConvertLaravel\Commands;
 
 trait CloudConvertCommandTrait {
 

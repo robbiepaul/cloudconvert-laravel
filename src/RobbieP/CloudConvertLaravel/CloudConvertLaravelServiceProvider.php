@@ -1,6 +1,5 @@
 <?php namespace RobbieP\CloudConvertLaravel;
 
-
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Foundation\AliasLoader;
 
