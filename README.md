@@ -171,7 +171,7 @@ CloudConvert::website('www.nyan.cat')
 ### Converting to and from external storage options
 At the moment CloudConvert let you use *FTP* or *Amazon S3* as storage options. However it looks like in the future they will add *Google Drive* and *Dropbox* to the API
 > **Please note: **
-> To use these storage options you will need to provide the configuration in the `config/packages/robbiep/cloudconvert-laravel/config.php` 
+> To use these storage options you will need to provide the configuration in the `config/cloudconvert.php` 
 
 ```php
 # Lets say you have a PDF and you want to convert it to an ePub file and 
