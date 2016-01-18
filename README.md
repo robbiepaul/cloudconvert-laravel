@@ -1,7 +1,7 @@
 # CloudConvert Laravel API
 
 
-A Laravel wrapper for the CloudConvert API. See [https://cloudconvert.org](https://cloudconvert.org) for more details.
+A Laravel wrapper for the CloudConvert API. See [https://cloudconvert.com](https://cloudconvert.com) for more details.
 
 [![Build Status](https://travis-ci.org/robbiepaul/cloudconvert-laravel.svg?branch=v0.1)](https://travis-ci.org/robbiepaul/cloudconvert-laravel)
  
@@ -42,11 +42,9 @@ Next you need to add the service provider to `config/app.php`
 One more step. 
 
 You need to publish the config `php artisan vendor:publish`
-> Laravel 4 requires slightly different syntax for publishing configs, use `php artisan config:publish robbiep/cloudconvert-laravel`
 
 Just enter your API key in `config/cloudconvert.php` 
-> You can get your free API key by registering at [https://cloudconvert.org](https://cloudconvert.org)
-
+> You can get your free API key by registering at [https://cloudconvert.com](https://cloudconvert.com)
 
 Now you can use CloudConvert in your application!
 
@@ -138,6 +136,18 @@ It will also work with converting remote files (just make sure you provide a pat
 
 CloudConvert::file('http://upload.wikimedia.org/wikipedia/commons/a/aa/Logo_Google_2013_Official.svg')
             ->to('images/google.png');
+```
+
+#### Merging PDFs
+At the moment, merging only works with remotely hosted files, however in the future it will work with uploaded files and files from storage
+```php
+# Merge the PDFs in the array in to a single PDF
+
+CloudConvert::merge([
+             'https://cloudconvert.com/assets/d04a9878/testfiles/pdfexample1.pdf',                          
+             'https://cloudconvert.com/assets/d04a9878/testfiles/pdfexample2.pdf'
+            ])
+            ->to('merged.pdf');
 ```
 
 ### Website screenshot
@@ -294,9 +304,10 @@ $cloudConvert->file('randomuser.jpg')->to('png');
 ## Todo
 - [x] Release
 - [ ] Write some more tests
-- [ ] Enable merging of multiple files
+- [x] Enable merging of multiple files
 - [x] Enable multiple conversions using one process
 - [ ] Refactor the commands
+- [x] Added support for Guzzle ~6.0
  
 ## Contributing
  
@@ -308,10 +319,10 @@ $cloudConvert->file('randomuser.jpg')->to('png');
   
 ## Credits
  
-Thanks to [Lunaweb Ltd.](http://www.lunaweb.de/) for their API. Go [check it out](https://cloudconvert.org/page/api).
+Thanks to [Lunaweb Ltd.](http://www.lunaweb.de/) for their API. Go [check it out](https://cloudconvert.com/page/api).
  
 ## Resources
 
-* [API Documentation](https://cloudconvert.org/page/api)
-* [Conversion Types](https://cloudconvert.org/formats)
-* [CloudConvert Blog](https://cloudconvert.org/blog)
+* [API Documentation](https://cloudconvert.com/page/api)
+* [Conversion Types](https://cloudconvert.com/formats)
+* [CloudConvert Blog](https://cloudconvert.com/blog)
