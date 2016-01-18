@@ -44,11 +44,11 @@ class ConvertLocalFile extends Convert implements ConvertInterface {
 
 	public function getConversionSettings()
 	{
-
 		$settings = [
 			'input' => CloudConvert::INPUT_UPLOAD,
 			'outputformat' => $this->output->getFormat(),
-			'file' => @fopen($this->getFilepath(), 'r'),
+			'file' => $this->getInputFile(),
+			'filename' => $this->getInputFilename(),
 			'converteroptions' => $this->output->getConverterOptions(),
 			'preset' => $this->output->getPreset(),
 			'output' => $this->output->getStorage()
@@ -60,6 +60,17 @@ class ConvertLocalFile extends Convert implements ConvertInterface {
 		}
 
 		return $settings;
+	}
+
+	public function getInputFile()
+	{
+		return @fopen($this->getFilepath(), 'r');
+	}
+
+
+	public function getInputFilename()
+	{
+		return basename($this->getFilepath());
 	}
 
 	/**

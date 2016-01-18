@@ -62,18 +62,49 @@ class Process {
     }
 
     /**
-     * @param Convert $input
+     * @param Convert|array $input
      * @param Convert $output
      * @return mixed
      */
-    public function convert(Convert $input, Convert $output)
+    public function convert($input, Convert $output)
     {
         $this->validateInputAndOutput($input, $output);
-        $input->prepareOutput($output);
+        
+        $options = $this->getInputOptions($input, $output);
 
-        $response = $this->process($input->toArray());
+        $response = $this->process($options);
 
         return $response;
+    }
+
+    protected function getInputOptions($input, $output)
+    {
+        if(is_array($input) && isset($input[0]) && $input[0] instanceof ConvertRemoteFile) {
+            $primaryInput = $input[0];
+            $primaryInput->prepareOutput($output);
+            $options = $primaryInput->toArray();
+            if(isset($options['file'])) {
+                $obj = new ConvertMultiple;
+                $obj->file = $options['file'];
+                $obj->filename = isset($options['filename']) ? $options['filename'] : 1;
+                $options['file'] = [$obj->toJson()];
+            } 
+           
+            foreach ($input as $key => $inputObj) {
+                if($key > 0) {
+                    $inputObj->prepareOutput($output);
+                    $obj = new ConvertMultiple;
+                    $obj->file = $inputObj->toArray()['file'];
+                    $obj->filename = isset($inputObj->toArray()['filename']) ? $inputObj->toArray()['filename'] : $k+1;
+                    $options['file'][] = $obj->toJson();
+                }
+            }
+            $options['wait'] = true;
+            return $options;
+        }
+        $input->prepareOutput($output);
+        $options = $input->toArray();
+        return $options;
     }
 
     /**
@@ -247,7 +278,7 @@ class Process {
      */
     private function validateInputAndOutput($input, $output)
     {
-        if(!$input instanceof Convert) {
+        if(!$input instanceof Convert && !is_array($input)) {
             throw new InvalidArgumentException('Input is not convertable');
         }
         if(!$output instanceof Convert) {

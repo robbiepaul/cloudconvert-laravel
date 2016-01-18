@@ -30,9 +30,10 @@ class CloudConvert
      * @var null
      */
     private $api_key;
-    private $api_url = 'https://api.cloudconvert.org';
+    private $api_url = 'https://api.cloudconvert.com';
     private $process;
     private $input;
+    private $inputs;
     private $output;
     private $resource;
     private $input_method;
@@ -109,6 +110,24 @@ class CloudConvert
     public function file($file)
     {
         $this->init($file);
+        return $this;
+    }
+
+    /**
+     * @param $array
+     * @return $this
+     * @throws Exception
+     */
+    public function merge(array $array)
+    {
+        foreach ($array as $file) {
+            $input = $this->init($file);
+            if(! $input instanceof ConvertRemoteFile) {
+                throw new Exception('Merged files must be remote files');
+            }
+            $this->inputs[] = $input;
+            $this->resource = null;
+        }
         return $this;
     }
 
@@ -727,6 +746,7 @@ class CloudConvert
      */
     public function getInput()
     {
+        if(!empty($this->inputs)) return $this->inputs;
         return $this->input;
     }
 
@@ -736,7 +756,8 @@ class CloudConvert
      */
     public function getInputFormat()
     {
-        return isset($this->input) ? $this->getInput()->getFormat() : $this->input_format;
+        $inputObj = (!empty($this->inputs)) ? $this->inputs[0] : $this->input;
+        return isset($this->input) ? $inputObj->getFormat() : $this->input_format;
     }
 
     /**
