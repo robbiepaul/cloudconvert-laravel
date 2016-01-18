@@ -11,7 +11,7 @@ class Guzzle6Adapter implements HttpClientInterface {
     /**
      * Uses Guzzle 6.*
      */
-    function __construct()
+    public function __construct()
     {
         $this->client = new Client();
     }

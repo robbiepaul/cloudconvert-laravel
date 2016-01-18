@@ -29,7 +29,7 @@ interface HttpClientInterface {
      * @param $url
      * @param string $method get, post, delete, put
      * @param array $params
-     * @return HttpClientAdapter
+     * @return Guzzle5Adapter|Guzzle6Adapter
      */
     public function request ( $url, $method, $params = [] );
 
