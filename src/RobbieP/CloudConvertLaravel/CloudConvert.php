@@ -703,7 +703,7 @@ class CloudConvert
     private function getProcessById($id)
     {
         $process = $this->processes->filter(function ($item) use ($id) {
-            return $item->id = $id;
+            return $item->id === $id;
         })->first();
         return $process;
     }
