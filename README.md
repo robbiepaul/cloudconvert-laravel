@@ -308,6 +308,7 @@ $cloudConvert->file('randomuser.jpg')->to('png');
 - [x] Enable multiple conversions using one process
 - [ ] Refactor the commands
 - [x] Added support for Guzzle ~6.0
+- [ ] Readme file is getting long, convert to wiki
  
 ## Contributing
  
