@@ -3,7 +3,7 @@
 
 A Laravel wrapper for the CloudConvert API. See [https://cloudconvert.com](https://cloudconvert.com) for more details.
 
-[![Build Status](https://travis-ci.org/robbiepaul/cloudconvert-laravel.svg?branch=v0.1)](https://travis-ci.org/robbiepaul/cloudconvert-laravel)
+[![Build Status](https://travis-ci.org/robbiepaul/cloudconvert-laravel.svg?branch=v0.1)](https://travis-ci.org/robbiepaul/cloudconvert-laravel) [![Latest Stable Version](https://poser.pugx.org/robbiep/cloudconvert-laravel/v/stable)](https://packagist.org/packages/robbiep/cloudconvert-laravel) [![Total Downloads](https://poser.pugx.org/robbiep/cloudconvert-laravel/downloads)](https://packagist.org/packages/robbiep/cloudconvert-laravel) [![Latest Unstable Version](https://poser.pugx.org/robbiep/cloudconvert-laravel/v/unstable)](https://packagist.org/packages/robbiep/cloudconvert-laravel) [![License](https://poser.pugx.org/robbiep/cloudconvert-laravel/license)](https://packagist.org/packages/robbiep/cloudconvert-laravel)
  
 
  
