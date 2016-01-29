@@ -26,7 +26,7 @@ class Guzzle6Adapter implements HttpClientInterface {
     public function post($url, $params = [], $query = null)
     {
         $body = is_array($query) && is_array($params)  ? array_merge($params, $query) : $params;
-        
+
         $opts = [ 'json' =>  $body  ];
 
         if(isset($body['file']) && is_resource($body['file']))  {
@@ -117,7 +117,8 @@ class Guzzle6Adapter implements HttpClientInterface {
     {
         $content = [];
         foreach($body as $name => $contents) {
-            $content[] = ['name' => $name, 'contents' => $contents];
+
+            $content[] = $this->getMultipartContent($name, $contents);
         }
         $opts = [ 'multipart' => $content ];
         try {
@@ -129,5 +130,37 @@ class Guzzle6Adapter implements HttpClientInterface {
         return $this->returnJsonResponse();
     }
 
+    /**
+     * @param $name
+     * @param $contents
+     * @return array
+     */
+    public function getMultipartContent($name, $contents)
+    {
+        if(! is_array($contents)) {
+            $multipartContent = ['name' => $name, 'contents' => $contents];
+        } else {
+            $multipartContent = $this->flattenArray($name, $contents);
+        }
+        return $multipartContent;
+
+    }
+
+    /**
+     * @param $name
+     * @param $contents
+     * @return array
+     */
+    private function flattenArray($name, $contents)
+    {
+        foreach ($contents as $key => $value)
+        {
+            $new_name = $name.'[' . $key . ']';
+
+            if(is_array($value)) $this->flattenArray($new_name, $value);
+        }
+
+        return ['name' => $new_name, 'contents' => $value];
+    }
 
 }
