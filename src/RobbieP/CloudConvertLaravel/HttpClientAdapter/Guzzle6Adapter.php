@@ -138,7 +138,7 @@ class Guzzle6Adapter implements HttpClientInterface {
     public function getMultipartContent($name, $contents)
     {
         if(! is_array($contents)) {
-            $multipartContent = ['name' => $name, 'contents' => $contents];
+            $multipartContent = ['name' => $name, 'contents' => is_numeric($contents) ? (string) $contents : $contents];
         } else {
             $multipartContent = $this->flattenArray($name, $contents);
         }
@@ -160,7 +160,7 @@ class Guzzle6Adapter implements HttpClientInterface {
             if(is_array($value)) $this->flattenArray($new_name, $value);
         }
 
-        return ['name' => $new_name, 'contents' => $value];
+        return ['name' => $new_name, 'contents' => is_numeric($value) ? (string) $value : $value];
     }
 
 }
