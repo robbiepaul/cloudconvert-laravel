@@ -12,7 +12,7 @@ class ConvertStorage extends Convert implements ConvertInterface {
 
 	public function save()
 	{
-		return  false;
+		return false;
 	}
 
 	public function getMethod()

@@ -153,6 +153,17 @@ class ConvertTest extends BaseTest {
 
 	}
 
+	public function testStorageOption()
+	{
+        $config = Mockery::mock('\RobbieP\CloudConvertLaravel\Config', [
+            'get' => 'value'
+        ]);
+        $s3StorageFile = new \RobbieP\CloudConvertLaravel\StorageS3($config);
+        $s3StorageFile->setOptions(['path' => 'hello.mp4']);
+        $outputConvertLocalFile = new \RobbieP\CloudConvertLaravel\ConvertStorage($s3StorageFile);
+		$this->assertSame('mp4', $outputConvertLocalFile->getFormat());
+	}
+
 
 	protected function tearDown()
 	{

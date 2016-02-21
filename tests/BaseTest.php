@@ -3,6 +3,7 @@
 
 abstract class BaseTest extends PHPUnit_Framework_TestCase {
 
+
 	public static function bootstrapLaravel()
 	{
 
@@ -11,12 +12,15 @@ abstract class BaseTest extends PHPUnit_Framework_TestCase {
 	protected  $cloudConvert;
 	protected  $client;
 	protected  $process_client;
+	protected  $config;
+
 
 	function __construct ()
 	{
+		date_default_timezone_set('Europe/London');
 		self::bootstrapLaravel();
 		parent::__construct();
-		$config = Mockery::mock('\RobbieP\CloudConvertLaravel\Config')->shouldReceive('get')->andReturn('VALUE');
+		$this->config = Mockery::mock('\RobbieP\CloudConvertLaravel\Config')->shouldReceive('get')->andReturn('VALUE');
 		$this->cloudConvert = new \RobbieP\CloudConvertLaravel\CloudConvert();
 		$client = $this->mockClient();
 		$this->cloudConvert->setClient($client);

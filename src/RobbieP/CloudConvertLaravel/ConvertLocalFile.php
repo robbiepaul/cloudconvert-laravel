@@ -18,10 +18,6 @@ class ConvertLocalFile extends Convert implements ConvertInterface {
 			$this->setFormat($file->getClientOriginalExtension());
 		} else {
 
-//			$this->file = $file;
-//			$this->setPath(dirname($file));
-//			//$this->setFilename(basename($file));
-
 			$this->setFile($file);
 
 		}

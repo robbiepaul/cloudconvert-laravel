@@ -47,20 +47,4 @@ class StorageFTP extends Storage implements  StorageInterface {
 		return self::INPUT_METHOD;
 	}
 
-	/**
-	 * @param $options
-	 * @return void
-	 */
-	public function setOptions($options)
-	{
-		// TODO: Implement setOptions() method.
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function options()
-	{
-		// TODO: Implement options() method.
-	}
 }

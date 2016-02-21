@@ -273,6 +273,7 @@ abstract class Convert {
      */
 	protected  function isFormat($format)
 	{
+		if($format instanceof Storage) return false;
 		$format = $this->stripQueryString($format);
 		return ctype_alnum($format);
 	}
