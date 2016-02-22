@@ -5,8 +5,11 @@ use GuzzleHttp\Exception\ClientException;
 
 class Guzzle6Adapter implements HttpClientInterface {
 
+    protected $multipartContent = [];
     private $client;
     private $response;
+    protected $outputArray = [];
+
 
     /**
      * Uses Guzzle 6.*
@@ -100,6 +103,8 @@ class Guzzle6Adapter implements HttpClientInterface {
     }
 
     /**
+     * Return JSON encoded response
+     *
      * @return mixed
      */
     protected function returnJsonResponse()
@@ -115,12 +120,10 @@ class Guzzle6Adapter implements HttpClientInterface {
      */
     public function multipart($url, $body)
     {
-        $content = [];
         foreach($body as $name => $contents) {
-
-            $content[] = $this->getMultipartContent($name, $contents);
+            $this->getMultipartContent($name, $contents);
         }
-        $opts = [ 'multipart' => $content ];
+        $opts = [ 'multipart' => $this->multipartContent ];
         try {
             $this->response = $this->client->post($url,  $opts);
         } catch (\Exception $e) {
@@ -138,12 +141,14 @@ class Guzzle6Adapter implements HttpClientInterface {
     public function getMultipartContent($name, $contents)
     {
         if(! is_array($contents)) {
-            $multipartContent = ['name' => $name, 'contents' => is_numeric($contents) ? (string) $contents : $contents];
+            $this->addToMultiPart(['name' => $name, 'contents' => is_numeric($contents) ? (string) $contents : $contents]);
         } else {
             $multipartContent = $this->flattenArray($name, $contents);
+            foreach($multipartContent as $contentArray) {
+                $this->addToMultiPart($contentArray);
+            }
         }
-        return $multipartContent;
-
+        return $this->multipartContent;
     }
 
     /**
@@ -156,11 +161,21 @@ class Guzzle6Adapter implements HttpClientInterface {
         foreach ($contents as $key => $value)
         {
             $new_name = $name.'[' . $key . ']';
-
             if(is_array($value)) $this->flattenArray($new_name, $value);
+            else $this->outputArray[] = ['name' => $new_name, 'contents' => is_numeric($value) ? (string)$value : $value];
         }
+        return $this->outputArray;
+    }
 
-        return ['name' => $new_name, 'contents' => is_numeric($value) ? (string) $value : $value];
+    /**
+     * Add single contentArray to final multipartContent array
+     * @param $contentArray
+     */
+    private function addToMultiPart(array $contentArray)
+    {
+        if(! in_array($contentArray, $this->multipartContent)) {
+            $this->multipartContent[] = $contentArray;
+        }
     }
 
 }

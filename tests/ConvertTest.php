@@ -164,6 +164,43 @@ class ConvertTest extends BaseTest {
 		$this->assertSame('mp4', $outputConvertLocalFile->getFormat());
 	}
 
+	public function testGuzzle6AdapterOutputFlattenMultipart()
+	{
+        $adapter = new \RobbieP\CloudConvertLaravel\HttpClientAdapter\Guzzle6Adapter();
+        $outputArray = [
+            's3' => [
+                'accesskeyid' => 'accesskeyidXXX',
+                'secretaccesskey' => 'secretaccesskeyXXX',
+                'bucket' => 'bucketXXX',
+                'path' => 'hello.mp4',
+                'acl' => 'public-read',
+                'region' => 'eu-west-1'
+            ]
+        ];
+
+        $outputMultipartContent = $adapter->getMultipartContent('output', $outputArray);
+
+        $this->assertCount(count($outputArray['s3']), $outputMultipartContent);
+        $this->assertArrayHasKey('name', $outputMultipartContent[0]);
+        $this->assertContains('output[s3][accesskeyid]', $outputMultipartContent[0]);
+        $this->assertArrayHasKey('contents', $outputMultipartContent[0]);
+        $this->assertContains('accesskeyidXXX', $outputMultipartContent[0]);
+
+	}
+
+	public function testGuzzle6AdapterOutputNonFlatten()
+	{
+        $adapter = new \RobbieP\CloudConvertLaravel\HttpClientAdapter\Guzzle6Adapter();
+
+        $outputMultipartContent = $adapter->getMultipartContent('file', 'test.jpg');
+
+        $this->assertArrayHasKey('name', $outputMultipartContent[0]);
+        $this->assertContains('file', $outputMultipartContent[0]);
+        $this->assertArrayHasKey('contents', $outputMultipartContent[0]);
+        $this->assertContains('test.jpg', $outputMultipartContent[0]);
+
+	}
+
 
 	protected function tearDown()
 	{
