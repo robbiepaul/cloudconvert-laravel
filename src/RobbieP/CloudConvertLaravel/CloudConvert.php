@@ -128,6 +128,7 @@ class CloudConvert
 
     /**
      * @param $type
+     * @param bool $chain
      * @return $this|CloudConvert
      */
     public function to($type, $chain = false)
@@ -574,8 +575,12 @@ class CloudConvert
     public function convertFileAndSaveTo()
     {
         $this->convertFile();
-        if ($this->process->waitForConversion()) {
+
+        if ($this->getProcess()->waitForConversion()) {
             return $this->downloadConvertedFile();
+        }
+        else if(! $this->getProcess()->shouldWait() ) {
+            return $this;
         }
         throw new Exception('Problem saving file');
     }

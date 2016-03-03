@@ -40,7 +40,8 @@ class ConvertWebsite extends Convert implements ConvertInterface {
 			'file' => $this->getFile(),
 			'converteroptions' =>  $this->output->getConverterOptions(),
 			'preset' =>$this->output->getPreset(),
-			'output' =>$this->output->getStorage()
+			'output' =>$this->output->getStorage(), 
+			'wait' => $this->wait
 		];
 
 	}

@@ -16,6 +16,7 @@ abstract class Convert {
 	protected $preset;
 	protected $seperator;
 	protected $output;
+	protected $wait;
 
 	/**
 	 * @param $file
@@ -285,6 +286,7 @@ abstract class Convert {
 	{
 		$output->filenameCheck($this);
 		$this->output = $output;
+		$this->wait = ($output instanceof ConvertStorage) ? false :  true;
 	}
 
 	/**

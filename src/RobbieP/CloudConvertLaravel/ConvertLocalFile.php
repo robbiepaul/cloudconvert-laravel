@@ -53,12 +53,12 @@ class ConvertLocalFile extends Convert implements ConvertInterface {
 			'filename' => $this->getInputFilename(),
 			'converteroptions' => $this->output->getConverterOptions(),
 			'preset' => $this->output->getPreset(),
-			'output' => $this->output->getStorage()
+			'output' => $this->output->getStorage(),
+			'wait' => $this->wait
 		];
 
 		if ($this->uploadedFile !== null) {
 			$settings['filename'] = $this->uploadedFile->getClientOriginalName();
-
 		}
 
 		return $settings;

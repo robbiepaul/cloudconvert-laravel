@@ -67,9 +67,9 @@ class Process {
     {
         $this->validateInputAndOutput($input, $output);
         
-        $options = $this->getInputOptions($input, $output);
+        $this->options = $this->getInputOptions($input, $output);
 
-        $response = $this->process($options);
+        $response = $this->process($this->options);
 
         return $response;
     }
@@ -166,6 +166,7 @@ class Process {
      * @throws \Exception
      */
     public function waitForConversion($timeout = self::TIMEOUT) {
+        if(! $this->shouldWait() ) return false;
         $time = 0;
         while ($time++ <= $timeout) {
             sleep(1);
@@ -174,6 +175,11 @@ class Process {
             if( $this->isFinished() ) return true;
         }
         throw new \Exception('Timeout');
+    }
+
+    public function shouldWait()
+    {
+        return $this->options['wait'] === true;
     }
 
     /**

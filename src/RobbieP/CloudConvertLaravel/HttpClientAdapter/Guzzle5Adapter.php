@@ -17,22 +17,22 @@ class Guzzle5Adapter implements HttpClientInterface {
     }
 
     /**
-     * @param $url
+     * @param string $url
      * @param array $params
      * @param array|null $query
      * @return bool|mixed
+     * @throws \Exception
      */
     public function post($url, $params = [], $query = null)
     {
         $body = is_array($query) && is_array($params)  ? array_merge($params, $query) : $params;
         
-        $opts = [ 'json' =>  $body  ];
+        $opts = [ 'body' =>  $body  ];
 
         try {
             $this->response = $this->client->post($url,  $opts);
         } catch (\Exception $e) {
-            dump(['error msg' => $e->getMessage(), 'params' => $body]);
-            die();
+            throw $e;
         }
         return $this->response->json(['object' => true]);
     }

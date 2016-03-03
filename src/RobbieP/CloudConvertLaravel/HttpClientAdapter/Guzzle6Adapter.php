@@ -10,7 +10,6 @@ class Guzzle6Adapter implements HttpClientInterface {
     private $response;
     protected $outputArray = [];
 
-
     /**
      * Uses Guzzle 6.*
      */
@@ -141,7 +140,7 @@ class Guzzle6Adapter implements HttpClientInterface {
     public function getMultipartContent($name, $contents)
     {
         if(! is_array($contents)) {
-            $this->addToMultiPart(['name' => $name, 'contents' => is_numeric($contents) ? (string) $contents : $contents]);
+            $this->addToMultiPart(['name' => $name, 'contents' => $this->castContents($contents)]);
         } else {
             $multipartContent = $this->flattenArray($name, $contents);
             foreach($multipartContent as $contentArray) {
@@ -162,7 +161,7 @@ class Guzzle6Adapter implements HttpClientInterface {
         {
             $new_name = $name.'[' . $key . ']';
             if(is_array($value)) $this->flattenArray($new_name, $value);
-            else $this->outputArray[] = ['name' => $new_name, 'contents' => is_numeric($value) ? (string)$value : $value];
+            else $this->outputArray[] = ['name' => $new_name, 'contents' => $this->castContents($value)];
         }
         return $this->outputArray;
     }
@@ -176,6 +175,17 @@ class Guzzle6Adapter implements HttpClientInterface {
         if(! in_array($contentArray, $this->multipartContent)) {
             $this->multipartContent[] = $contentArray;
         }
+    }
+
+    /**
+     * @param $contents
+     * @return string
+     */
+    protected function castContents($contents)
+    {
+        if (is_numeric($contents)) return (string) $contents;
+        if (is_bool($contents)) return $contents ? 'true' : 'false';
+        return $contents;
     }
 
 }
