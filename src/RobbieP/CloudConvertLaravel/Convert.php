@@ -286,7 +286,7 @@ abstract class Convert {
 	{
 		$output->filenameCheck($this);
 		$this->output = $output;
-		$this->wait = ($output instanceof ConvertStorage) ? false :  true;
+		$this->wait = false;
 	}
 
 	/**

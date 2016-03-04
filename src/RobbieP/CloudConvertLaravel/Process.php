@@ -67,7 +67,9 @@ class Process {
     {
         $this->validateInputAndOutput($input, $output);
         
-        $this->options = $this->getInputOptions($input, $output);
+        $options = $this->getInputOptions($input, $output);
+
+        $this->mergeOptions($options);
 
         $response = $this->process($this->options);
 
@@ -324,6 +326,14 @@ class Process {
         $obj->file = $inputObj->toArray()['file'];
         $obj->filename = isset($inputObj->toArray()['filename']) ? $inputObj->toArray()['filename'] : $key + 1;
         return $obj;
+    }
+
+    /**
+     * @param $options
+     */
+    private function mergeOptions($options)
+    {
+        $this->options = array_merge($options, $this->options);
     }
 
 
