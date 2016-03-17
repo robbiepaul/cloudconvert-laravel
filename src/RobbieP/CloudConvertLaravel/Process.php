@@ -12,13 +12,13 @@ class Process {
     const STEP_CONVERT = 'convert';
     const TIMEOUT = 120;
 
-    private $id;
-    private $host;
-    private $step;
-    private $starttime;
-    private $endtime;
-    private $message;
-    private $url;
+    public $id;
+    public $host;
+    public $step;
+    public $starttime;
+    public $endtime;
+    public $message;
+    public $url;
     private $output;
     private $output_format;
     private $input_format;
