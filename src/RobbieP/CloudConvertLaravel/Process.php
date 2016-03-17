@@ -1,7 +1,7 @@
 <?php namespace RobbieP\CloudConvertLaravel;
 
-use OAuth\Common\Exception\Exception;
-use Symfony\Component\Process\Exception\InvalidArgumentException;
+use Exception;
+use InvalidArgumentException;
 
 class Process {
 
