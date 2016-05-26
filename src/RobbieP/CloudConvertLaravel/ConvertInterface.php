@@ -13,6 +13,8 @@ interface ConvertInterface {
 
 	public function getFormat ();
 
+	public function shouldWait ();
+
 	public function save ();
 
 	public function toArray ();

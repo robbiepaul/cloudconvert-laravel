@@ -2,6 +2,7 @@
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Psr7\Stream;
 
 class Guzzle6Adapter implements HttpClientInterface {
 
@@ -185,6 +186,7 @@ class Guzzle6Adapter implements HttpClientInterface {
     {
         if (is_numeric($contents)) return (string) $contents;
         if (is_bool($contents)) return $contents ? 'true' : 'false';
+        if (is_string($contents)) return utf8_encode($contents);
         return $contents;
     }
 

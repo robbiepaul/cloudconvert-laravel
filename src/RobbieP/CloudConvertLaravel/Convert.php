@@ -16,7 +16,7 @@ abstract class Convert {
 	protected $preset;
 	protected $seperator;
 	protected $output;
-	protected $wait;
+	protected $wait = true;
 
 	/**
 	 * @param $file
@@ -286,7 +286,6 @@ abstract class Convert {
 	{
 		$output->filenameCheck($this);
 		$this->output = $output;
-		$this->wait = false;
 	}
 
 	/**
@@ -310,6 +309,11 @@ abstract class Convert {
 	private function isURL($url)
 	{
 		return filter_var($url, FILTER_VALIDATE_URL);
+	}
+
+	public function shouldWait()
+	{
+		return $this->wait;
 	}
 
 }

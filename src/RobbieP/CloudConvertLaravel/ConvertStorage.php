@@ -8,6 +8,7 @@ class ConvertStorage extends Convert implements ConvertInterface {
 		$this->setMethod($file->getMethod());
 		$this->setFile($file->getPath());
 		$this->file = $file;
+		$this->wait = false;
 	}
 
 	public function save()
@@ -34,7 +35,7 @@ class ConvertStorage extends Convert implements ConvertInterface {
 			'converteroptions' =>  $this->output->getConverterOptions(),
 			'preset' =>$this->output->getPreset(),
 			'output' => $this->output->getStorage(),
-			'wait' => $this->wait
+			'wait' => $this->output->shouldWait()
 		];
 	}
 }

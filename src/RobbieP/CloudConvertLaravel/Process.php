@@ -100,6 +100,7 @@ class Process {
         }
         $input->prepareOutput($output);
         $options = $input->toArray();
+
         return $options;
     }
 
@@ -333,6 +334,9 @@ class Process {
      */
     private function mergeOptions($options)
     {
+        if(isset($this->options['callback']) || isset($options['callback'])) {
+            $this->options['wait'] = false;
+        }
         $this->options = array_merge($options, $this->options);
     }
 

@@ -41,7 +41,7 @@ class ConvertWebsite extends Convert implements ConvertInterface {
 			'converteroptions' =>  $this->output->getConverterOptions(),
 			'preset' =>$this->output->getPreset(),
 			'output' =>$this->output->getStorage(), 
-			'wait' => $this->wait
+			'wait' => $this->output->shouldWait()
 		];
 
 	}

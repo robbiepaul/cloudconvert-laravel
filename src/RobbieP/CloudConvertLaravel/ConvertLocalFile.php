@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class ConvertLocalFile extends Convert implements ConvertInterface {
 
 	private $uploadedFile;
+	protected $wait = true;
 
 	function __construct($file, $converteroptions = null)
 	{
@@ -54,7 +55,7 @@ class ConvertLocalFile extends Convert implements ConvertInterface {
 			'converteroptions' => $this->output->getConverterOptions(),
 			'preset' => $this->output->getPreset(),
 			'output' => $this->output->getStorage(),
-			'wait' => $this->wait
+			'wait' => $this->output->wait
 		];
 
 		if ($this->uploadedFile !== null) {
