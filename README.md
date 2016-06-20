@@ -202,13 +202,13 @@ It's that simple. The storage options `CloudConvert::S3($path)` and `CloudConver
 ### Non-blocking conversion using a callback URL
 When the conversion might take a long time you could use:
 ```php
-# Script: send_conversion.php
+# Script: sendConversion
 CloudConvert::file('/a/path/to/file.mov')
             ->callback('http://myserver.com/save_file.php')
             ->convert('mp4');
             
 
-# Script save_file.php
+# Script: saveFile
 CloudConvert::useProcess($_REQUEST['url'])
             ->save('/path/converted.mp4');
 ```
