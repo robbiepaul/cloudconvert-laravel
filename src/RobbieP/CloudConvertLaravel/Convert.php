@@ -132,6 +132,9 @@ abstract class Convert {
 	{
 		if( is_null($this->format) ) {
 			$this->format = $this->getExtension();
+			if(empty($this->format) && $this instanceof ConvertStorage && $this->getFile() && !empty($this->getFile()->getOutputFormat())) {
+				$this->format = $this->getFile()->getOutputFormat();
+			}
 		}
 		$this->validateFormat($this->format);
 		return $this->format;

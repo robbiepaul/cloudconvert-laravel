@@ -11,6 +11,7 @@ class StorageS3 extends Storage implements StorageInterface {
 	public $acl;
 	public $region;
 	private $config;
+	protected $outputformat;
 
 	/**
 	 * @param Config $config

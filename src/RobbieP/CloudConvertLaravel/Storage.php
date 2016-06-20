@@ -3,6 +3,9 @@
 
 abstract class Storage {
 
+	protected $outputformat;
+	public $path;
+
 	/**
 	 * @return mixed
 	 */
@@ -17,7 +20,7 @@ abstract class Storage {
 	public function options()
 	{
 		$this->validateCredentials();
-		return [static::INPUT_METHOD =>  get_object_vars($this)];
+		return [static::INPUT_METHOD =>  call_user_func('get_object_vars', $this)];
 	}
 
 	/**
@@ -30,6 +33,21 @@ abstract class Storage {
 				$this->{$k} = $option;
 			}
 		}
+	}
+
+	public function setFormat($format)
+	{
+		$this->outputformat = $format;
+	}
+
+	public function getOutputFormat()
+	{
+		return $this->outputformat;
+	}
+
+	public function setPath($path)
+	{
+		$this->path = $path;
 	}
 
 }

@@ -24,10 +24,18 @@ interface StorageInterface {
      */
 	public function getPath ();
 
+
+	public function setPath ($path);
+
 	/**
 	 * @return string
      */
 	public function getMethod ();
+
+
+	public function setFormat ($format);
+
+
 
 
 }

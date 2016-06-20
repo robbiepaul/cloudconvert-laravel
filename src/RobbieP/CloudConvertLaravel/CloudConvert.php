@@ -765,7 +765,7 @@ class CloudConvert
      */
     public function getOutputFormat()
     {
-        return isset($this->output) ? $this->getOutput()->getFormat() : $this->output_format;
+        return !isset($this->output_format) ? $this->getOutput()->getFormat() : $this->output_format;
     }
 
     /**
@@ -1002,7 +1002,12 @@ class CloudConvert
 	 */
 	private function returnInstanceWithOptions($path, $options, $instance)
 	{
-		$instance->setOptions(array_merge(['path' => $path], $options));
+        if($this->isFormat($path)){
+            $instance->setFormat($path);
+        } else {
+            $instance->setPath($path);
+        }
+		$instance->setOptions($options);
 		return $instance;
 	}
 
@@ -1067,6 +1072,11 @@ class CloudConvert
         }
         $this->inputs[] = $input;
         $this->resource = null;
+    }
+
+    private function isFormat($path)
+    {
+        return ctype_alnum($path);
     }
 
 
