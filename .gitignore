@@ -6,3 +6,4 @@ composer.lock
 node_modules
 log
 /.idea
+/nbproject/private/
