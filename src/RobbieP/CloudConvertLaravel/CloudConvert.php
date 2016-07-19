@@ -548,6 +548,17 @@ class CloudConvert
             throw new Exception('Please set the file before converting');
         }
     }
+    
+    /**
+     * Wait till convertion is finished
+     * 
+     * @return \RobbieP\CloudConvertLaravel\CloudConvert
+     */
+    public function wait()
+    {
+        $this->setOption('wait', true);
+        return $this;
+    }
 
     /**
      * @param string $name
