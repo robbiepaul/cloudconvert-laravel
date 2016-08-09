@@ -19,6 +19,9 @@ class Process {
     public $endtime;
     public $message;
     public $url;
+    public $info;
+    protected $response;
+    private $mode;
     private $output;
     private $output_format;
     private $input_format;
@@ -54,8 +57,8 @@ class Process {
     protected function process($params = [], $endpoint = '', $method = 'post')
     {
         $this->checkURLisOK();
-        $response = $this->http->{$method}($this->url . $endpoint, $params, $this->getQueryOptions());
-        return $response;
+        $this->response = $this->http->{$method}($this->url . $endpoint, $params, $this->getQueryOptions());
+        return $this->response ;
     }
 
     /**
@@ -71,34 +74,54 @@ class Process {
 
         $this->mergeOptions($options);
 
-        $response = $this->process($this->options);
+        $this->response = $this->process($this->options);
 
-        return $response;
+        return $this->response;
+    }
+
+    public function mode($mode, $input = null,  $output = null)
+    {
+        $this->mode = $mode;
+        $options = $this->getInputOptions($input, $output);
+        $this->mergeOptions($options);
+        $this->response = $this->process($this->options);
+        return $this->response;
+    }
+
+    public function getResponse()
+    {
+        return $this->response;
+    }
+    public function getInfo()
+    {
+        return $this->info;
     }
 
     protected function getInputOptions($input, $output)
     {
         if(is_array($input) && isset($input[0]) && $input[0] instanceof ConvertRemoteFile) {
             $primaryInput = $input[0];
-            $primaryInput->prepareOutput($output);
+            if(!is_null($output)) $primaryInput->prepareOutput($output);
             $options = $primaryInput->toArray();
             if(isset($options['file'])) {
                 $obj = $this->createMultipleFileObject($primaryInput, 0);
-                $options['file'] = [$obj->toJson()];
+                $options['files'] = [$obj->toJson()];
+                unset($options['file']);
             } 
            
             foreach ($input as $key => $inputObj) {
                 if($key > 0) {
-                    $inputObj->prepareOutput($output);
+                    if(!is_null($output)) $inputObj->prepareOutput($output);
                     $obj = $this->createMultipleFileObject($inputObj, $key);
-                    $options['file'][] = $obj->toJson();
+                    $options['files'][] = $obj->toJson();
                 }
             }
-            $options['filename'] = $output->getFilename();
+            $options['filename'] = $output ? $output->getFilename() : $primaryInput->getFilename();
             $options['wait'] = true;
+            $options['save'] = true;
             return $options;
         }
-        $input->prepareOutput($output);
+        if(!is_null($output)) $input->prepareOutput($output);
         $options = $input->toArray();
 
         return $options;
@@ -332,10 +355,13 @@ class Process {
     /**
      * @param $options
      */
-    private function mergeOptions($options)
+    private function mergeOptions($options = [])
     {
         if(isset($this->options['callback']) || isset($options['callback'])) {
             $this->options['wait'] = false;
+        }
+        if(isset($this->mode) && !is_null($this->mode)) {
+            $this->options['mode'] = $this->mode;
         }
         $this->options = array_merge($options, $this->options);
     }

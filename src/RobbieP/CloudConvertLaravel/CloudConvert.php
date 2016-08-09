@@ -20,10 +20,20 @@ class CloudConvert
 {
     use HttpClient;
 
-    const INPUT_DOWNLOAD = 'download';
-    const INPUT_UPLOAD = 'upload';
-    const INPUT_WEBSITE = 'website';
-    const INPUT_URL = 'url';
+    const INPUT_DOWNLOAD    = 'download';
+    const INPUT_UPLOAD      = 'upload';
+    const INPUT_WEBSITE     = 'website';
+    const INPUT_URL         = 'url';
+
+    const MODE_CONVERT      = 'convert';
+    const MODE_INFO         = 'info';
+    const MODE_COMBINE      = 'combine';
+    const MODE_COMPRESS     = 'compress';
+    const MODE_UNLOCK       = 'compress';
+    const MODE_PROTECT      = 'protect';
+    const MODE_ARCHIVE      = 'archive';
+    const MODE_EXTRACT      = 'extract';
+
     protected $fileSystem;
 
     /**
@@ -43,6 +53,7 @@ class CloudConvert
     private $options = [];
     private $preset = null;
     private $converteroptions;
+    private $mode;
 
     /**
      * Available storage options, must be configured.
@@ -165,6 +176,55 @@ class CloudConvert
     }
 
     /**
+     * @param null $mode
+     * @return $this|CloudConvert
+     * @throws Exception
+     * @internal param null $type
+     */
+    public function mode($mode = null)
+    {
+        $this->mode = $mode;
+        $this->startProcess();
+        $this->wait();
+        $this->getProcess()->mode($mode, $this->getInput(), $this->getOutput());
+
+        if ($this->getProcess()->waitForConversion()) {
+            return $this;
+        }
+        return $this;
+    }
+
+    public function response()
+    {
+        return !empty($this->process) ? $this->getProcess()->getResponse() : null;
+    }
+
+    public function getInfo()
+    {
+        return !empty($this->process) ? $this->getProcess()->getInfo() : null;
+    }
+
+    public function info()
+    {
+        return $this->mode('info');
+    }
+
+    /**
+     * @param $array
+     * @return $this
+     * @throws Exception
+     */
+    public function combine(array $array)
+    {
+        foreach ($array as $file) {
+            $this->addMultipleInput($file);
+        }
+        $this->mode('combine');
+
+        return $this;
+    }
+
+    /**
      * @throws Exception
      * @internal param null $output
      * @internal param null $path
@@ -281,11 +341,12 @@ class CloudConvert
     {
         $this->checkAPIkey();
         $this->validateFormats();
-        $response = $this->start('/process', [
+        $data = [
             'inputformat' => $this->getInputFormat(),
-            'outputformat' => $this->getOutputFormat(),
             'apikey' => $this->getApiKey()
-        ]);
+        ];
+        if($this->getOutputFormat()) $data['outputformat'] = $this->getOutputFormat();
+        $response = $this->start('/process', $data);
 
         $this->setProcess(new Process($response, $this->getInputFormat(), $this->getOutputFormat()));
 
@@ -526,6 +587,7 @@ class CloudConvert
      */
     private function validateFormats()
     {
+        if(!is_null($this->mode)) return true;
         if (!$this->getInputFormat() || !$this->getOutputFormat()) {
             throw new Exception('Invalid formats provided');
         }
@@ -776,7 +838,7 @@ class CloudConvert
      */
     public function getOutputFormat()
     {
-        return !isset($this->output_format) ? $this->getOutput()->getFormat() : $this->output_format;
+        return isset($this->output) ? $this->getOutput()->getFormat() : $this->output_format;
     }
 
     /**
