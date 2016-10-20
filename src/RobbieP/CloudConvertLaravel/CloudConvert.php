@@ -185,9 +185,7 @@ class CloudConvert
     {
         $this->mode = $mode;
         $this->startProcess();
-	if($wait) {
-	    $this->wait();
-	}
+	$this->setOption('wait', $wait);
         $this->getProcess()->mode($mode, $this->getInput(), $this->getOutput());
 
         if ($wait && $this->getProcess()->waitForConversion()) {
