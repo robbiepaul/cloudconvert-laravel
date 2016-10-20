@@ -181,14 +181,16 @@ class CloudConvert
      * @throws Exception
      * @internal param null $type
      */
-    public function mode($mode = null)
+    public function mode($mode = null, $wait = true)
     {
         $this->mode = $mode;
         $this->startProcess();
-        $this->wait();
+	if($wait) {
+	    $this->wait();
+	}
         $this->getProcess()->mode($mode, $this->getInput(), $this->getOutput());
 
-        if ($this->getProcess()->waitForConversion()) {
+        if ($wait && $this->getProcess()->waitForConversion()) {
             return $this;
         }
         return $this;
