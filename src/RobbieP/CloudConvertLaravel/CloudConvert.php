@@ -181,11 +181,11 @@ class CloudConvert
      * @throws Exception
      * @internal param null $type
      */
-    public function mode($mode = null)
+    public function mode($mode = null, $wait = true)
     {
         $this->mode = $mode;
         $this->startProcess();
-        $this->wait();
+        $this->wait($wait);
         $this->getProcess()->mode($mode, $this->getInput(), $this->getOutput());
 
         if ($this->getProcess()->waitForConversion()) {
@@ -616,9 +616,9 @@ class CloudConvert
      * 
      * @return \RobbieP\CloudConvertLaravel\CloudConvert
      */
-    public function wait()
+    public function wait($value = true)
     {
-        $this->setOption('wait', true);
+        $this->setOption('wait', $value);
         return $this;
     }
 
