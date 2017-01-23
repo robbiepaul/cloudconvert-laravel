@@ -221,7 +221,7 @@ class Process {
      */
     public function isFinished()
     {
-        return ( $this->step === self::STEP_FINISHED  && isset($this->output) && isset($this->output->url) );
+        return ( $this->step === self::STEP_FINISHED  && ((isset($this->output) && isset($this->output->url)) || $this->mode !== 'convert'));
     }
 
     /**
