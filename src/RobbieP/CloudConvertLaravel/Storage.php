@@ -20,7 +20,7 @@ abstract class Storage {
 	public function options()
 	{
 		$this->validateCredentials();
-		return [static::INPUT_METHOD =>  call_user_func('get_object_vars', $this)];
+		return [static::INPUT_METHOD => Helpers::getPublicObjectVars($this)];
 	}
 
 	/**
