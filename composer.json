@@ -25,5 +25,15 @@
             "RobbieP\\CloudConvertLaravel\\": "src/"
         }
     },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "RobbieP\\CloudConvertLaravel\\CloudConvertLaravelServiceProvider"
+            ],
+            "aliases": {
+                "CloudConvert": "RobbieP\\CloudConvertLaravel\\Facades\\CloudConvert"
+            }
+        }
+    },
     "minimum-stability": "dev"
 }
