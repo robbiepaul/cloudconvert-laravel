@@ -11,9 +11,9 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "illuminate/support": "^5.0",
-        "illuminate/filesystem": "^5.0",
-        "guzzlehttp/guzzle": "~5.0|~6.0",
+        "illuminate/support": "^6.0",
+        "illuminate/filesystem": "^6.0",
+        "guzzlehttp/guzzle": "~6.0",
         "patchwork/utf8": "1.*"
     },
     "require-dev": {
