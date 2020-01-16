@@ -1,5 +1,10 @@
 # CloudConvert Laravel API
 
+---
+
+**Deprecation warning: I don't have the time to support this package any more please use the [official CloudConvert Laravel package](https://github.com/cloudconvert/cloudconvert-laravel) instead**
+
+---
 
 A Laravel wrapper for the CloudConvert API. See [https://cloudconvert.com](https://cloudconvert.com) for more details.
 
